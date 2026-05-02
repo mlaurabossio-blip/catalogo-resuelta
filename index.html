@@ -305,8 +305,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 // ---- CONFIG ----
 const ADMIN_PWD = 'Simon*2018';
 const WA = '5493517479679';
-const SB_URL = localStorage.getItem('cat_sb_url') || '';
-const SB_KEY = localStorage.getItem('cat_sb_key') || '';
+const SB_URL = 'https://hydiqptsijsjhcahkrxp.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5ZGlxcHRzaWpzamhjYWhrcnhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0OTMwNTAsImV4cCI6MjA5MzA2OTA1MH0.eLdU6LbdMgdZcQXxtX4oXeIe84gawhpya3t6cehlQ9E';
 
 let sb = null;
 let catalog = {
@@ -320,15 +320,7 @@ let adminUnlocked = false;
 
 // ---- SUPABASE INIT ----
 async function initSupabase() {
-  let url = SB_URL, key = SB_KEY;
-  if (!url || !key) {
-    url = prompt('Supabase URL (solo la primera vez):');
-    key = prompt('Supabase Anon Key (solo la primera vez):');
-    if (!url || !key) { alert('Necesitás configurar Supabase'); return false; }
-    localStorage.setItem('cat_sb_url', url);
-    localStorage.setItem('cat_sb_key', key);
-  }
-  sb = supabase.createClient(url, key);
+  sb = supabase.createClient(SB_URL, SB_KEY);
   return true;
 }
 
