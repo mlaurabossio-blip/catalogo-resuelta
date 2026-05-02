@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pizzas & Empanadas — Resuelta</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#080500;--surface:#120d00;--card:#1c1400;--card2:#221a00;--border:#2e2100;--border2:#3d2d00;--gold:#f0a500;--gold2:#ffd166;--gold-dim:rgba(240,165,0,0.1);--red:#d94f2b;--cream:#fdf4e0;--muted:#7a6840;--text:#eddfc0;--green:#27ae60;--green-dim:rgba(39,174,96,0.12);--amber:#e67e22;--amber-dim:rgba(230,126,34,0.12);}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;}
+.header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
+.header-stripe{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));}
+.header-inner{padding:.9rem 1.2rem .7rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.brand-name{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:900;color:var(--gold);line-height:1;}
+.brand-tagline{font-size:.7rem;color:var(--muted);margin-top:3px;font-style:italic;}
+.header-cart-btn{background:var(--gold);color:#000;border:none;border-radius:12px;padding:.55rem 1rem;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.4rem;font-family:'DM Sans',sans-serif;position:relative;flex-shrink:0;}
+.cart-badge{background:var(--red);color:white;border-radius:50%;width:17px;height:17px;font-size:.6rem;font-weight:800;display:none;align-items:center;justify-content:center;position:absolute;top:-6px;right:-6px;border:2px solid var(--surface);}
+.header-meta{display:flex;align-items:center;gap:.5rem;padding:.4rem 1.2rem .7rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.meta-pill{font-size:.71rem;color:var(--muted);}
+.meta-pill strong{color:var(--gold2);font-weight:600;}
+.meta-dot{color:var(--border2);}
+.pay-strip{background:rgba(240,165,0,.06);border-bottom:1px solid var(--border);padding:.5rem 1.2rem;display:flex;align-items:center;gap:.8rem;font-size:.73rem;color:var(--muted);}
+.pay-strip strong{color:var(--gold2);}
+.pay-chip{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:.2rem .6rem;font-size:.69rem;color:var(--text);font-weight:600;}
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:97px;z-index:40;}
+.tab{flex:1;padding:.85rem;text-align:center;font-size:.9rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;border-bottom:3px solid transparent;transition:all .2s;}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.section{padding:1rem 1rem 7rem;}
+.hidden{display:none!important;}
+.sec-title{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--gold2);margin-bottom:.2rem;}
+.sec-sub{font-size:.75rem;color:var(--muted);line-height:1.4;margin-bottom:1rem;}
+.sec-divider{height:1px;background:var(--border);margin:1.2rem 0;}
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .55rem;border-radius:20px;font-size:.67rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.4rem;}
+.badge-disponible{background:var(--green-dim);color:var(--green);border:1px solid rgba(39,174,96,.25);}
+.badge-encargo{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(230,126,34,.3);}
+.badge-hot{background:rgba(217,79,43,.15);color:#f07050;border:1px solid rgba(217,79,43,.3);}
+.encargo-note{font-size:.73rem;color:var(--amber);background:var(--amber-dim);border-radius:8px;padding:.4rem .6rem;margin-bottom:.6rem;border-left:3px solid var(--amber);line-height:1.4;}
+.product-card{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:1.1rem;margin-bottom:.8rem;transition:border-color .2s;}
+.product-card.selected{border-color:var(--gold);}
+.product-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.4rem;}
+.product-name{font-family:'Fraunces',serif;font-size:.98rem;font-weight:700;color:var(--cream);flex:1;padding-right:.5rem;line-height:1.2;}
+.product-price{font-size:1rem;font-weight:700;color:var(--gold);white-space:nowrap;}
+.product-desc{font-size:.75rem;color:var(--muted);line-height:1.45;margin-bottom:.7rem;}
+.kit-card{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:1.2rem;margin-bottom:.9rem;transition:border-color .2s;}
+.kit-card.selected{border-color:var(--gold);}
+.kit-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.35rem;}
+.kit-name{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--cream);}
+.kit-price{font-size:1.1rem;font-weight:700;color:var(--gold);}
+.kit-sub{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:.9rem;}
+.masa-selector,.muzz-selector{margin-bottom:.8rem;}
+.masa-label,.muzz-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;}
+.masa-chips,.muzz-chips{display:flex;flex-wrap:wrap;gap:.4rem;}
+.masa-chip,.muzz-chip{padding:.3rem .75rem;border-radius:20px;font-size:.76rem;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--muted);transition:all .15s;user-select:none;}
+.masa-chip.selected-chip,.muzz-chip.selected-chip{background:var(--gold-dim);border-color:var(--gold);color:var(--gold2);}
+.qty-control{display:flex;align-items:center;gap:.8rem;justify-content:flex-end;margin-top:.5rem;}
+.qty-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.qty-btn:active{transform:scale(.88);}
+.qty-btn.plus{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
+.qty-num{font-size:1rem;font-weight:700;color:var(--cream);min-width:22px;text-align:center;}
+.promo-banner{background:linear-gradient(135deg,rgba(240,165,0,.1) 0%,rgba(255,209,102,.04) 100%);border:1px solid rgba(240,165,0,.25);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1.2rem;}
+.promo-banner-title{font-family:'Fraunces',serif;font-size:.9rem;color:var(--gold);margin-bottom:.6rem;}
+.promo-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.83rem;transition:opacity .2s;}
+.promo-row:last-child{border-bottom:none;}
+.promo-row.disabled{opacity:.35;text-decoration:line-through;}
+.save{color:var(--green);font-weight:600;font-size:.73rem;}
+.price-val{color:var(--gold2);font-weight:600;}
+.sticky-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--border);padding:.7rem 1rem;display:none;z-index:40;}
+.sticky-bar.visible{display:block;}
+.sticky-inner{background:var(--gold);border-radius:14px;padding:.85rem 1.2rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.sticky-left{font-size:.8rem;font-weight:600;color:#000;}
+.sticky-left span{font-size:1rem;font-weight:800;}
+.sticky-right{font-size:.85rem;font-weight:700;color:#000;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:100;backdrop-filter:blur(6px);align-items:flex-end;}
+.overlay.open{display:flex;}
+.cart-modal{background:var(--surface);border-top:1px solid var(--border2);border-radius:22px 22px 0 0;padding:1.4rem 1.2rem 2rem;width:100%;max-height:90vh;overflow-y:auto;}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 1.2rem;}
+.modal-title{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--gold);display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.close-btn{background:var(--card);border:1px solid var(--border2);color:var(--muted);border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;}
+.cart-sec-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.7rem 0 .3rem;border-top:1px solid var(--border);margin-top:.4rem;}
+.cart-sec-label:first-child{border-top:none;margin-top:0;}
+.cart-item{display:flex;justify-content:space-between;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.84rem;}
+.cart-item-name{color:var(--cream);}
+.cart-item-meta{font-size:.73rem;color:var(--muted);margin-top:2px;}
+.cart-item-price{color:var(--gold);font-weight:700;white-space:nowrap;}
+.cart-sub{display:flex;justify-content:space-between;padding:.55rem .8rem;margin:.5rem 0;background:var(--card);border-radius:10px;font-size:.83rem;}
+.cart-sub .lbl{color:var(--muted);}
+.cart-sub .val{color:var(--text);font-weight:600;}
+.cart-promo-tag{background:var(--green-dim);border:1px solid rgba(39,174,96,.2);border-radius:8px;padding:.45rem .7rem;font-size:.78rem;color:var(--green);margin:.5rem 0;}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0 .5rem;border-top:1px solid var(--border2);margin-top:.5rem;}
+.cart-total-row .lbl{font-size:.9rem;color:var(--muted);}
+.cart-total-row .amount{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--gold);}
+.cart-empty{text-align:center;padding:2.5rem 0;color:var(--muted);font-size:.88rem;line-height:1.6;}
+.payment-box{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:1rem;margin:1rem 0;}
+.payment-box-title{font-family:'Fraunces',serif;font-size:.88rem;color:var(--gold2);margin-bottom:.7rem;}
+.pay-method{margin-bottom:.7rem;}
+.pay-method:last-child{margin-bottom:0;}
+.pay-method-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.3rem;font-weight:700;}
+.pay-detail{font-size:.8rem;color:var(--text);line-height:1.6;background:var(--surface);border-radius:8px;padding:.5rem .7rem;}
+.pay-detail strong{color:var(--gold2);}
+.form-section{margin-top:1rem;background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:1rem;}
+.form-title{font-family:'Fraunces',serif;font-size:.9rem;color:var(--gold2);margin-bottom:.8rem;}
+.form-group{margin-bottom:.7rem;}
+.form-group label{display:block;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem;}
+.form-group input{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:.65rem .8rem;color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.form-group input:focus{border-color:var(--gold);}
+.form-group input::placeholder{color:var(--muted);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.location-note{font-size:.73rem;color:var(--muted);background:rgba(240,165,0,.06);border:1px solid var(--border);border-radius:8px;padding:.5rem .7rem;margin-top:.5rem;line-height:1.4;}
+.location-note strong{color:var(--gold2);}
+.loc-btn{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:.65rem;color:var(--text);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.5rem;transition:border-color .2s;}
+.loc-btn.got-loc{border-color:var(--green);color:var(--green);}
+.whatsapp-btn{width:100%;background:#25D366;color:white;border:none;border-radius:14px;padding:1rem;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:.6rem;margin-top:1rem;transition:opacity .2s;}
+.whatsapp-btn:active{opacity:.85;}
+
+/* ADMIN */
+.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:flex-end;}
+.admin-overlay.open{display:flex;}
+.admin-modal{background:#100d00;border-top:2px solid var(--gold);border-radius:22px 22px 0 0;padding:1.4rem 1.2rem 2rem;width:100%;max-height:92vh;overflow-y:auto;}
+.admin-title{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--gold);display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;}
+.admin-sec{font-size:.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:1rem 0 .5rem;border-top:1px solid var(--border);margin-top:.3rem;}
+.admin-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;padding:.8rem;background:var(--card);border-radius:10px;border:1px solid var(--border);flex-wrap:wrap;}
+.admin-row-label{flex:1;font-size:.82rem;color:var(--text);min-width:100px;}
+.admin-row-label small{display:block;font-size:.7rem;color:var(--muted);margin-top:2px;}
+.admin-input{width:90px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:.4rem .6rem;color:var(--text);font-size:.83rem;font-family:'DM Sans',sans-serif;text-align:right;outline:none;}
+.state-toggle{display:flex;border-radius:8px;overflow:hidden;border:1px solid var(--border2);flex-shrink:0;}
+.state-btn{padding:.32rem .5rem;font-size:.64rem;font-weight:700;cursor:pointer;border:none;background:var(--surface);color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;}
+.state-btn.act-d{background:var(--green);color:#000;}
+.state-btn.act-e{background:var(--amber);color:#000;}
+.state-btn.act-o{background:var(--border2);color:var(--text);}
+.toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--border2);border-radius:24px;transition:.2s;}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s;}
+.toggle-switch input:checked+.toggle-slider{background:var(--green);}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(20px);}
+.admin-save-btn{width:100%;background:var(--gold);color:#000;border:none;border-radius:12px;padding:.9rem;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:1.2rem;font-family:'DM Sans',sans-serif;}
+.add-product-form{background:var(--surface);border:1px dashed var(--border2);border-radius:12px;padding:.9rem;margin-top:.5rem;}
+.add-product-form input{width:100%;background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:.5rem .7rem;color:var(--text);font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:.5rem;}
+.add-btn{background:var(--gold);color:#000;border:none;border-radius:8px;padding:.5rem 1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;}
+.del-btn{background:transparent;border:1px solid rgba(217,79,43,.4);color:var(--red);border-radius:6px;padding:.25rem .5rem;font-size:.7rem;cursor:pointer;}
+
+/* LOGIN MODAL */
+.login-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;align-items:center;justify-content:center;}
+.login-overlay.open{display:flex;}
+.login-box{background:#100d00;border:1px solid var(--gold);border-radius:18px;padding:2rem 1.5rem;width:90%;max-width:320px;text-align:center;}
+.login-title{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--gold);margin-bottom:1.2rem;}
+.login-input{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:.75rem 1rem;color:var(--text);font-size:1rem;font-family:'DM Sans',sans-serif;outline:none;text-align:center;letter-spacing:.1em;margin-bottom:.8rem;}
+.login-input:focus{border-color:var(--gold);}
+.login-btn{width:100%;background:var(--gold);color:#000;border:none;border-radius:10px;padding:.85rem;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.login-error{color:var(--red);font-size:.8rem;margin-top:.5rem;display:none;}
+.loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:400;flex-direction:column;gap:1rem;}
+.loading-text{color:var(--gold);font-family:'Fraunces',serif;font-size:1.2rem;}
+.loading-sub{color:var(--muted);font-size:.8rem;}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading">
+  <div class="loading-text">🍕 Pizzas & Empanadas</div>
+  <div class="loading-sub">Cargando catálogo...</div>
+</div>
+
+<!-- LOGIN ADMIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-title">🔐 Acceso Admin</div>
+    <input type="password" class="login-input" id="admin-pwd" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkAdmin()">
+    <button class="login-btn" onclick="checkAdmin()">Ingresar</button>
+    <div class="login-error" id="login-error">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div>
+      <div class="brand-name" id="brand-name">🍕 Pizzas & Empanadas</div>
+      <div class="brand-tagline" id="brand-tagline">Listas cuando quieras · Resolvé cualquier comida en minutos</div>
+    </div>
+    <button class="header-cart-btn" onclick="openCart()">
+      🛒 Pedido
+      <div class="cart-badge" id="cartBadge">0</div>
+    </button>
+  </div>
+  <div class="header-meta">
+    <div class="meta-pill">📦 <strong>Villa Catalina</strong></div>
+    <div class="meta-dot">·</div>
+    <div class="meta-pill"><strong>Bella Vista</strong></div>
+    <div class="meta-dot">·</div>
+    <div class="meta-pill">📲 Pedido por WhatsApp</div>
+  </div>
+</div>
+
+<div class="pay-strip">
+  💳 Pagá con
+  <span class="pay-chip">💵 Efectivo</span>
+  <span class="pay-chip">📲 Transferencia</span>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('pizzas',this)">🍕 Pizzas</button>
+  <button class="tab" onclick="showTab('empanadas',this)">🥟 Empanadas</button>
+</div>
+
+<div class="section" id="tab-pizzas">
+  <div class="sec-title">Kits de Pizza</div>
+  <div class="sec-sub">Todo incluido para armar vos en casa · Al horno o a la parrilla 🔥</div>
+  <div id="kits-list"></div>
+  <div class="sec-divider"></div>
+  <div class="sec-title">Extras para tu pizza</div>
+  <div class="sec-sub">Se venden por separado · Se agregan sobre la muzzarella</div>
+  <div id="extras-list"></div>
+</div>
+
+<div class="section hidden" id="tab-empanadas">
+  <div class="sec-title">Empanadas Congeladas</div>
+  <div class="sec-sub">Solo para horno · Congeladas · Por docena</div>
+  <div class="promo-banner">
+    <div class="promo-banner-title">🎉 Promociones</div>
+    <div class="promo-row" id="promo-row-1"><span>1 docena</span><span class="price-val" id="promo-1doc-display">$15.000</span><span></span></div>
+    <div class="promo-row" id="promo-row-2"><span>2 docenas</span><span class="price-val" id="promo-2doc-display">$28.000</span><span class="save">Ahorrás $2.000</span></div>
+    <div class="promo-row" id="promo-row-3"><span>3 docenas</span><span class="price-val" id="promo-3doc-display">$42.000</span><span class="save">Ahorrás $3.000</span></div>
+  </div>
+  <div class="sec-title">Elegí tus sabores</div>
+  <div class="sec-sub">Seleccioná cuántas docenas de cada uno</div>
+  <div id="empanadas-list"></div>
+</div>
+
+<div class="sticky-bar" id="stickyBar">
+  <div class="sticky-inner" onclick="openCart()">
+    <div class="sticky-left"><span id="stickyCount">0</span> productos en tu pedido</div>
+    <div class="sticky-right">Ver → $<span id="stickyTotal">0</span></div>
+  </div>
+</div>
+
+<div class="overlay" id="cartOverlay" onclick="closeCartOutside(event)">
+  <div class="cart-modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Tu pedido <button class="close-btn" onclick="closeCart()">✕</button></div>
+    <div id="cartContent"></div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="admin-overlay" id="adminOverlay" onclick="closeAdminOutside(event)">
+  <div class="admin-modal">
+    <div class="modal-handle"></div>
+    <div class="admin-title">⚙️ Administrar catálogo <button class="close-btn" onclick="closeAdmin()">✕</button></div>
+    <div class="admin-sec">Kits de Pizza</div>
+    <div id="admin-kits"></div>
+    <div class="admin-sec">Tipos de Masa</div>
+    <div id="admin-masas"></div>
+    <div class="add-product-form">
+      <input type="text" id="new-masa-name" placeholder="Nombre de la masa">
+      <input type="number" id="new-masa-price" placeholder="Precio adicional (0 si no tiene)">
+      <button class="add-btn" onclick="addProduct('masa')">+ Agregar masa</button>
+    </div>
+    <div class="admin-sec">Variantes de Muzzarella</div>
+    <div id="admin-muzz"></div>
+    <div class="add-product-form">
+      <input type="text" id="new-muzz-name" placeholder="Nombre de la variante">
+      <input type="number" id="new-muzz-price" placeholder="Precio adicional">
+      <button class="add-btn" onclick="addProduct('muzz')">+ Agregar variante</button>
+    </div>
+    <div class="admin-sec">Extras para Pizza</div>
+    <div id="admin-extras"></div>
+    <div class="add-product-form">
+      <input type="text" id="new-extra-name" placeholder="Nombre del extra">
+      <input type="number" id="new-extra-price" placeholder="Precio">
+      <input type="text" id="new-extra-desc" placeholder="Descripción breve">
+      <button class="add-btn" onclick="addProduct('extra')">+ Agregar extra</button>
+    </div>
+    <div class="admin-sec">Empanadas — Precios y Promos</div>
+    <div class="admin-row">
+      <div class="admin-row-label">1 docena<small>Precio base</small></div>
+      <input class="admin-input" type="number" id="admin-1doc" value="15000">
+      <label class="toggle-switch"><input type="checkbox" id="toggle-promo1" checked onchange="togglePromo(1,this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="admin-row">
+      <div class="admin-row-label">2 docenas<small>Precio promo</small></div>
+      <input class="admin-input" type="number" id="admin-2doc" value="28000">
+      <label class="toggle-switch"><input type="checkbox" id="toggle-promo2" checked onchange="togglePromo(2,this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="admin-row">
+      <div class="admin-row-label">3 docenas<small>Precio promo</small></div>
+      <input class="admin-input" type="number" id="admin-3doc" value="42000">
+      <label class="toggle-switch"><input type="checkbox" id="toggle-promo3" checked onchange="togglePromo(3,this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="admin-sec">Empanadas — Sabores</div>
+    <div id="admin-flavors"></div>
+    <div class="add-product-form">
+      <input type="text" id="new-emp-name" placeholder="Nombre del sabor">
+      <button class="add-btn" onclick="addProduct('emp')">+ Agregar sabor</button>
+    </div>
+    <button class="admin-save-btn" onclick="saveAdmin()">✅ Guardar todos los cambios</button>
+  </div>
+</div>
+
+<script>
+// ---- CONFIG ----
+const ADMIN_PWD = 'Simon*2018';
+const WA = '5493517479679';
+const SB_URL = localStorage.getItem('cat_sb_url') || '';
+const SB_KEY = localStorage.getItem('cat_sb_key') || '';
+
+let sb = null;
+let catalog = {
+  kits: [], masas: [], muzzVariants: [], extras: [], flavors: [],
+  prices: { doc1:15000, doc2:28000, doc3:42000 },
+  promos: { 1:true, 2:true, 3:true }
+};
+let cart = { kits:[], extras:[], empanadas:[] };
+let userLocation = null;
+let adminUnlocked = false;
+
+// ---- SUPABASE INIT ----
+async function initSupabase() {
+  let url = SB_URL, key = SB_KEY;
+  if (!url || !key) {
+    url = prompt('Supabase URL (solo la primera vez):');
+    key = prompt('Supabase Anon Key (solo la primera vez):');
+    if (!url || !key) { alert('Necesitás configurar Supabase'); return false; }
+    localStorage.setItem('cat_sb_url', url);
+    localStorage.setItem('cat_sb_key', key);
+  }
+  sb = supabase.createClient(url, key);
+  return true;
+}
+
+// ---- LOAD / SAVE CATALOG ----
+async function loadCatalog() {
+  try {
+    const { data, error } = await sb.from('catalogo').select('*').eq('id', 1).single();
+    if (error || !data) {
+      await saveCatalogDefault();
+    } else {
+      catalog = JSON.parse(data.data);
+    }
+  } catch(e) {
+    await saveCatalogDefault();
+  }
+}
+
+async function saveCatalogDefault() {
+  catalog = {
+    kits: [
+      { id:'kit5',  name:'Kit x5 Pizzas',  price:30000, state:'disponible', desc:'5 masas · 5 muzzarellas · 5 salsas', hot:false },
+      { id:'kit10', name:'Kit x10 Pizzas', price:55000, state:'disponible', desc:'10 masas · 10 muzzarellas · 10 salsas', hot:true },
+    ],
+    masas: [
+      { id:'masa-piedra',  name:'Masa a la piedra', price:0, state:'disponible' },
+      { id:'masa-doblema', name:'Doble masa',        price:0, state:'disponible' },
+      { id:'masa-integral',name:'Integral',          price:0, state:'disponible' },
+    ],
+    muzzVariants: [
+      { id:'muzz-std',       name:'Muzzarella estándar',                price:0,    state:'disponible' },
+      { id:'muzz-jamon',     name:'Muzzarella con Jamón en tocitos',    price:4000, state:'disponible' },
+      { id:'muzz-roquefort', name:'Muzzarella con Roquefort en tocitos',price:4000, state:'disponible' },
+    ],
+    extras: [
+      { id:'ext-champ', name:'Extra champiñones al ajillo',   price:4000, state:'disponible', desc:'Sobre por separado · Sobre la muzzarella' },
+      { id:'ext-4q',    name:'Extra gourmet 4 quesos',        price:4000, state:'disponible', desc:'Sobre por separado · Sobre la muzzarella' },
+      { id:'ext-gour',  name:'Extra gourmet cebolla, berenjena y hongos', price:4000, state:'disponible', desc:'Sobre por separado · Sobre la muzzarella' },
+    ],
+    flavors: [
+      { id:'jymuzz',    name:'Jamón y Muzzarella',                 state:'disponible' },
+      { id:'berenjena', name:'Berenjena, cebolla caramelizada y hongos', state:'disponible' },
+      { id:'saltenas',  name:'Salteñas cortada a cuchillo',        state:'disponible' },
+      { id:'criollas',  name:'Criollas',                           state:'disponible' },
+      { id:'pollo',     name:'Pollo',                              state:'encargo' },
+      { id:'arabes',    name:'Árabes',                             state:'encargo' },
+      { id:'dulces',    name:'Cordobesas Dulces',                  state:'encargo' },
+    ],
+    prices: { doc1:15000, doc2:28000, doc3:42000 },
+    promos: { 1:true, 2:true, 3:true }
+  };
+  await persistCatalog();
+}
+
+async function persistCatalog() {
+  await sb.from('catalogo').upsert({ id:1, data: JSON.stringify(catalog) });
+}
+
+// ---- TABS ----
+function showTab(tab, btn) {
+  ['pizzas','empanadas'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
+  document.getElementById('tab-'+tab).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ---- RENDER ----
+function renderAll() {
+  renderPromoDisplay();
+  renderKits();
+  renderExtras();
+  renderEmpanadas();
+  updateUI();
+}
+
+function renderPromoDisplay() {
+  const p = catalog.prices;
+  document.getElementById('promo-1doc-display').textContent = '$'+p.doc1.toLocaleString('es-AR');
+  document.getElementById('promo-2doc-display').textContent = '$'+p.doc2.toLocaleString('es-AR');
+  document.getElementById('promo-3doc-display').textContent = '$'+p.doc3.toLocaleString('es-AR');
+  [1,2,3].forEach(n => {
+    document.getElementById('promo-row-'+n)?.classList.toggle('disabled', !catalog.promos[n]);
+  });
+}
+
+function renderKits() {
+  const container = document.getElementById('kits-list');
+  container.innerHTML = '';
+  catalog.kits.forEach(kit => {
+    if (kit.state === 'off') return;
+    const cartItem = cart.kits.find(c => c.kitId === kit.id);
+    const qty = cartItem ? cartItem.qty : 0;
+    const selectedMasa = cartItem ? cartItem.masa : null;
+    const selectedMuzz = cartItem ? cartItem.muzz : null;
+    const isEncargo = kit.state === 'encargo';
+    const availMasas = catalog.masas.filter(m => m.state !== 'off');
+    const availMuzz  = catalog.muzzVariants.filter(m => m.state !== 'off');
+    const masaChips = availMasas.map(m =>
+      `<div class="masa-chip ${selectedMasa===m.id?'selected-chip':''}" onclick="selectMasa('${kit.id}','${m.id}')">${m.name}</div>`
+    ).join('');
+    const muzzChips = availMuzz.map(m =>
+      `<div class="muzz-chip ${selectedMuzz===m.id?'selected-chip':''}" onclick="selectMuzz('${kit.id}','${m.id}')">${m.name}${m.price>0?' +$'+m.price.toLocaleString('es-AR'):''}</div>`
+    ).join('');
+    const div = document.createElement('div');
+    div.className = 'kit-card'+(qty>0?' selected':'');
+    div.id = 'kit-card-'+kit.id;
+    div.innerHTML = `
+      <div class="kit-header"><div class="kit-name">${kit.name}</div><div class="kit-price">$${kit.price.toLocaleString('es-AR')}</div></div>
+      ${kit.hot?'<span class="badge badge-hot">🔥 El más conveniente</span>':''}
+      ${isEncargo?'<span class="badge badge-encargo">📋 Por encargo</span>':'<span class="badge badge-disponible">✅ Disponible</span>'}
+      ${isEncargo?`<div class="encargo-note">⏰ Entrega coordinada <strong>lunes a miércoles</strong>.</div>`:''}
+      <div class="kit-sub">${kit.desc} · 🔥 Al horno o a la parrilla</div>
+      ${availMasas.length>0?`<div class="masa-selector"><div class="masa-label">Tipo de masa</div><div class="masa-chips">${masaChips}</div></div>`:''}
+      ${availMuzz.length>0?`<div class="muzz-selector"><div class="muzz-label">Variante de muzzarella</div><div class="muzz-chips">${muzzChips}</div></div>`:''}
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeKitQty('${kit.id}','${kit.name}',-1)">−</button>
+        <span class="qty-num" id="qty-kit-${kit.id}">${qty}</span>
+        <button class="qty-btn plus" onclick="changeKitQty('${kit.id}','${kit.name}',1)">+</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function renderExtras() {
+  const container = document.getElementById('extras-list');
+  container.innerHTML = '';
+  catalog.extras.forEach(e => {
+    if (e.state === 'off') return;
+    const cartItem = cart.extras.find(c => c.id === e.id);
+    const qty = cartItem ? cartItem.qty : 0;
+    const div = document.createElement('div');
+    div.className = 'product-card'+(qty>0?' selected':'');
+    div.id = 'extra-card-'+e.id;
+    div.innerHTML = `
+      <div class="product-header"><div class="product-name">${e.name}</div><div class="product-price">$${e.price.toLocaleString('es-AR')}</div></div>
+      ${e.state==='encargo'?'<span class="badge badge-encargo">📋 Por encargo</span>':'<span class="badge badge-disponible">✅ Disponible</span>'}
+      ${e.state==='encargo'?`<div class="encargo-note">⏰ Entrega coordinada <strong>lunes a miércoles</strong>.</div>`:''}
+      <div class="product-desc">${e.desc||''}</div>
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeExtraQty('${e.id}','${e.name.replace(/'/g,"\\'")}',${e.price},-1)">−</button>
+        <span class="qty-num" id="qty-extra-${e.id}">${qty}</span>
+        <button class="qty-btn plus" onclick="changeExtraQty('${e.id}','${e.name.replace(/'/g,"\\'")}',${e.price},1)">+</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function renderEmpanadas() {
+  const container = document.getElementById('empanadas-list');
+  container.innerHTML = '';
+  catalog.flavors.forEach(f => {
+    if (f.state === 'off') return;
+    const cartItem = cart.empanadas.find(e => e.flavorId === f.id);
+    const qty = cartItem ? cartItem.qty : 0;
+    const div = document.createElement('div');
+    div.className = 'product-card'+(qty>0?' selected':'');
+    div.id = 'emp-card-'+f.id;
+    div.innerHTML = `
+      <div class="product-header"><div class="product-name">${f.name}</div><div class="product-price">$${catalog.prices.doc1.toLocaleString('es-AR')}</div></div>
+      ${f.state==='encargo'?`<span class="badge badge-encargo">📋 Por encargo</span><div class="encargo-note">⏰ Entrega coordinada <strong>lunes a miércoles</strong>.</div>`:'<span class="badge badge-disponible">✅ Disponible hoy</span>'}
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeEmpQty('${f.id}','${f.name.replace(/'/g,"\\'")}','${f.state}',-1)">−</button>
+        <span class="qty-num" id="qty-emp-${f.id}">${qty}</span>
+        <button class="qty-btn plus" onclick="changeEmpQty('${f.id}','${f.name.replace(/'/g,"\\'")}','${f.state}',1)">+</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+// ---- CART HANDLERS ----
+function selectMasa(kitId, masaId) {
+  const item = cart.kits.find(c => c.kitId === kitId);
+  if (item) item.masa = masaId;
+  renderKits();
+}
+function selectMuzz(kitId, muzzId) {
+  const item = cart.kits.find(c => c.kitId === kitId);
+  if (item) item.muzz = muzzId;
+  renderKits();
+}
+function changeKitQty(kitId, kitName, delta) {
+  const kit = catalog.kits.find(k => k.id === kitId);
+  const idx = cart.kits.findIndex(c => c.kitId === kitId);
+  if (idx === -1 && delta > 0) {
+    const defMasa = catalog.masas.find(m => m.state !== 'off');
+    const defMuzz = catalog.muzzVariants.find(m => m.state !== 'off');
+    cart.kits.push({ kitId, kitName, qty:1, masa:defMasa?.id||null, muzz:defMuzz?.id||null, price:kit.price });
+  } else if (idx !== -1) {
+    cart.kits[idx].qty = Math.max(0, cart.kits[idx].qty + delta);
+    if (cart.kits[idx].qty === 0) cart.kits.splice(idx, 1);
+  }
+  renderKits(); updateUI();
+}
+function changeExtraQty(id, name, price, delta) {
+  const idx = cart.extras.findIndex(e => e.id === id);
+  if (idx === -1 && delta > 0) cart.extras.push({ id, name, qty:1, price });
+  else if (idx !== -1) { cart.extras[idx].qty = Math.max(0, cart.extras[idx].qty + delta); if (cart.extras[idx].qty === 0) cart.extras.splice(idx, 1); }
+  const qty = cart.extras.find(e => e.id === id)?.qty || 0;
+  const el = document.getElementById('qty-extra-'+id); if (el) el.textContent = qty;
+  document.getElementById('extra-card-'+id)?.classList.toggle('selected', qty > 0);
+  updateUI();
+}
+function changeEmpQty(id, name, state, delta) {
+  const idx = cart.empanadas.findIndex(e => e.flavorId === id);
+  if (idx === -1 && delta > 0) cart.empanadas.push({ flavorId:id, flavorName:name, qty:1, state });
+  else if (idx !== -1) { cart.empanadas[idx].qty = Math.max(0, cart.empanadas[idx].qty + delta); cart.empanadas[idx].state = state; if (cart.empanadas[idx].qty === 0) cart.empanadas.splice(idx, 1); }
+  const qty = cart.empanadas.find(e => e.flavorId === id)?.qty || 0;
+  const el = document.getElementById('qty-emp-'+id); if (el) el.textContent = qty;
+  document.getElementById('emp-card-'+id)?.classList.toggle('selected', qty > 0);
+  updateUI();
+}
+
+// ---- PROMO CALC ----
+function bestPrice(n) {
+  if (n <= 0) return { price:0, label:null };
+  const p = catalog.prices; const pr = catalog.promos;
+  let best = n * p.doc1, label = null;
+  if (pr[3] && n >= 3) {
+    const s3 = Math.floor(n/3), rem = n%3;
+    let c = s3 * p.doc3;
+    if (rem===2) c += pr[2] ? p.doc2 : 2*p.doc1;
+    else if (rem===1) c += p.doc1;
+    if (c < best) { best=c; label='Promo x3 aplicada 🎉'; }
+  }
+  if (pr[2] && n===2 && p.doc2 < best) { best=p.doc2; label='Promo 2 docenas 🎉'; }
+  return { price:best, label };
+}
+function calcSplit(items) {
+  const disp = items.filter(e=>e.state==='disponible'), enc = items.filter(e=>e.state==='encargo');
+  const dispDoc = disp.reduce((a,e)=>a+e.qty,0), encDoc = enc.reduce((a,e)=>a+e.qty,0);
+  const d = bestPrice(dispDoc), en = bestPrice(encDoc);
+  return { disp, enc, dispDoc, encDoc, dispPrice:d.price, dispLabel:d.label, encPrice:en.price, encLabel:en.label, total:d.price+en.price };
+}
+function getKitTotal() {
+  return cart.kits.reduce((acc,c) => {
+    const kit = catalog.kits.find(k=>k.id===c.kitId);
+    const muzz = catalog.muzzVariants.find(m=>m.id===c.muzz);
+    return acc + ((kit?kit.price:0) + (muzz&&muzz.price>0?muzz.price:0)) * c.qty;
+  }, 0);
+}
+function getExtrasTotal() { return cart.extras.reduce((a,e)=>a+e.price*e.qty,0); }
+function getCartTotal() { return getKitTotal() + getExtrasTotal() + calcSplit(cart.empanadas).total; }
+function getCartCount() { return cart.kits.reduce((a,c)=>a+c.qty,0) + cart.extras.reduce((a,e)=>a+e.qty,0) + cart.empanadas.reduce((a,e)=>a+e.qty,0); }
+
+function updateUI() {
+  const count = getCartCount();
+  const badge = document.getElementById('cartBadge');
+  badge.style.display = count > 0 ? 'flex' : 'none';
+  badge.textContent = count;
+  document.getElementById('stickyBar').classList.toggle('visible', count > 0);
+  document.getElementById('stickyCount').textContent = count;
+  document.getElementById('stickyTotal').textContent = getCartTotal().toLocaleString('es-AR');
+}
+
+// ---- GEOLOCATION ----
+function getLocation() {
+  const btn = document.getElementById('locBtn');
+  if (!navigator.geolocation) { btn.textContent = '❌ No disponible'; return; }
+  btn.textContent = '⏳ Obteniendo ubicación...';
+  navigator.geolocation.getCurrentPosition(
+    pos => { userLocation = { lat:pos.coords.latitude, lng:pos.coords.longitude }; btn.textContent = '✅ Ubicación capturada'; btn.classList.add('got-loc'); },
+    () => { btn.textContent = '📍 Capturar mi ubicación'; }
+  );
+}
+
+// ---- CART RENDER ----
+function openCart() { renderCart(); document.getElementById('cartOverlay').classList.add('open'); }
+function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+function closeCartOutside(e) { if (e.target.id==='cartOverlay') closeCart(); }
+
+function renderCart() {
+  const container = document.getElementById('cartContent');
+  if (getCartCount() === 0) { container.innerHTML = `<div class="cart-empty">Tu carrito está vacío 🛒<br><small>Agregá productos para continuar</small></div>`; return; }
+  let h = '';
+  if (cart.kits.length > 0) {
+    h += `<div class="cart-sec-label">🍕 Kits de Pizza</div>`;
+    cart.kits.forEach(c => {
+      const kit = catalog.kits.find(k=>k.id===c.kitId);
+      const masa = catalog.masas.find(m=>m.id===c.masa);
+      const muzz = catalog.muzzVariants.find(m=>m.id===c.muzz);
+      const muzzExtra = muzz&&muzz.price>0?muzz.price:0;
+      const unitPrice = (kit?kit.price:0) + muzzExtra;
+      const meta = [masa?`Masa: ${masa.name}`:null, muzz?`Muzz: ${muzz.name}`:null, `x${c.qty}`].filter(Boolean).join(' · ');
+      h += `<div class="cart-item"><div><div class="cart-item-name">${c.kitName}</div><div class="cart-item-meta">${meta}</div></div><div class="cart-item-price">$${(unitPrice*c.qty).toLocaleString('es-AR')}</div></div>`;
+    });
+    h += `<div class="cart-sub"><span class="lbl">Subtotal pizzas</span><span class="val">$${getKitTotal().toLocaleString('es-AR')}</span></div>`;
+  }
+  if (cart.extras.length > 0) {
+    h += `<div class="cart-sec-label">✨ Extras</div>`;
+    cart.extras.forEach(e => h += `<div class="cart-item"><div><div class="cart-item-name">${e.name}</div><div class="cart-item-meta">x${e.qty}</div></div><div class="cart-item-price">$${(e.price*e.qty).toLocaleString('es-AR')}</div></div>`);
+    h += `<div class="cart-sub"><span class="lbl">Subtotal extras</span><span class="val">$${getExtrasTotal().toLocaleString('es-AR')}</span></div>`;
+  }
+  const sp = calcSplit(cart.empanadas);
+  if (sp.disp.length > 0) {
+    h += `<div class="cart-sec-label">🥟 Empanadas — Disponibles hoy</div>`;
+    sp.disp.forEach(e => h += `<div class="cart-item"><div><div class="cart-item-name">${e.flavorName}</div><div class="cart-item-meta">${e.qty} docena${e.qty>1?'s':''}</div></div></div>`);
+    if (sp.dispLabel) h += `<div class="cart-promo-tag">✅ ${sp.dispLabel}</div>`;
+    h += `<div class="cart-sub"><span class="lbl">Subtotal disponibles</span><span class="val">$${sp.dispPrice.toLocaleString('es-AR')}</span></div>`;
+  }
+  if (sp.enc.length > 0) {
+    h += `<div class="cart-sec-label">📋 Empanadas — Por encargo</div>`;
+    sp.enc.forEach(e => h += `<div class="cart-item"><div><div class="cart-item-name">${e.flavorName}</div><div class="cart-item-meta">${e.qty} docena${e.qty>1?'s':''}</div></div></div>`);
+    if (sp.encLabel) h += `<div class="cart-promo-tag">✅ ${sp.encLabel}</div>`;
+    h += `<div class="cart-sub"><span class="lbl">Subtotal por encargo</span><span class="val">$${sp.encPrice.toLocaleString('es-AR')}</span></div>`;
+  }
+  h += `<div class="cart-total-row"><span class="lbl">Total del pedido</span><span class="amount">$${getCartTotal().toLocaleString('es-AR')}</span></div>`;
+  h += `<div class="payment-box"><div class="payment-box-title">💳 Medios de pago</div>
+    <div class="pay-method"><div class="pay-method-label">💵 Efectivo</div><div class="pay-detail">Contra entrega</div></div>
+    <div class="pay-method"><div class="pay-method-label">📲 Transferencia</div><div class="pay-detail"><strong>Titular:</strong> Maria Laura Bossio<br><strong>CVU:</strong> 0000076500000000009267<br><strong>Alias:</strong> mlbossio.ppay<br><strong>App:</strong> Personal Pay</div></div>
+  </div>`;
+  h += `<div class="form-section"><div class="form-title">📍 Datos de entrega</div>
+    <div class="form-group"><label>Tu nombre</label><input type="text" id="field-nombre" placeholder="Ej: María González"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Barrio</label><input type="text" id="field-barrio" placeholder="Ej: Villa Catalina"></div>
+      <div class="form-group"><label>Manzana y Lote</label><input type="text" id="field-mzlote" placeholder="Ej: Mz 12 L 5"></div>
+    </div>
+    <button class="loc-btn" id="locBtn" onclick="getLocation()">📍 Capturar mi ubicación</button>
+    <div class="location-note">📌 <strong>También podés</strong> compartir tu ubicación desde WhatsApp.</div>
+  </div>`;
+  h += `<button class="whatsapp-btn" onclick="sendWA()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.132 1.528 5.877L.057 23.882a.5.5 0 0 0 .61.61l6.079-1.466A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.667-.513-5.188-1.407l-.371-.22-3.853.93.955-3.768-.242-.389A9.955 9.955 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+    Enviar pedido por WhatsApp
+  </button>`;
+  container.innerHTML = h;
+}
+
+// ---- WHATSAPP ----
+function sendWA() {
+  const nombre = document.getElementById('field-nombre')?.value.trim() || '(sin nombre)';
+  const barrio = document.getElementById('field-barrio')?.value.trim() || '(sin indicar)';
+  const mzlote = document.getElementById('field-mzlote')?.value.trim() || '(sin indicar)';
+  let m = `🛒 *PEDIDO*\n👤 *Cliente:* ${nombre}\n📍 *Barrio:* ${barrio}\n🏠 *Mz/Lote:* ${mzlote}\n`;
+  if (userLocation) m += `🗺️ *Ubicación:* https://maps.google.com/?q=${userLocation.lat},${userLocation.lng}\n`;
+  m += '\n';
+  if (cart.kits.length > 0) {
+    m += `🍕 *PIZZAS*\n`;
+    cart.kits.forEach(c => {
+      const kit = catalog.kits.find(k=>k.id===c.kitId);
+      const masa = catalog.masas.find(mm=>mm.id===c.masa);
+      const muzz = catalog.muzzVariants.find(mm=>mm.id===c.muzz);
+      const muzzExtra = muzz&&muzz.price>0?muzz.price:0;
+      const unitP = (kit?kit.price:0)+muzzExtra;
+      m += `  • ${c.kitName} x${c.qty}${masa?' · '+masa.name:''}${muzz?' · '+muzz.name:''} = $${(unitP*c.qty).toLocaleString('es-AR')}\n`;
+    });
+    m += '\n';
+  }
+  if (cart.extras.length > 0) {
+    m += `✨ *EXTRAS*\n`;
+    cart.extras.forEach(e => m += `  • ${e.name} x${e.qty} = $${(e.price*e.qty).toLocaleString('es-AR')}\n`);
+    m += '\n';
+  }
+  const sp = calcSplit(cart.empanadas);
+  if (sp.disp.length > 0) {
+    m += `🥟 *EMPANADAS — Disponibles hoy*\n`;
+    sp.disp.forEach(e => m += `  • ${e.flavorName}: ${e.qty} docena${e.qty>1?'s':''}\n`);
+    if (sp.dispLabel) m += `  ✅ ${sp.dispLabel}\n`;
+    m += `  Subtotal: $${sp.dispPrice.toLocaleString('es-AR')}\n\n`;
+  }
+  if (sp.enc.length > 0) {
+    m += `📋 *EMPANADAS — Por encargo (coordinar lun-mié)*\n`;
+    sp.enc.forEach(e => m += `  • ${e.flavorName}: ${e.qty} docena${e.qty>1?'s':''}\n`);
+    if (sp.encLabel) m += `  ✅ ${sp.encLabel}\n`;
+    m += `  Subtotal: $${sp.encPrice.toLocaleString('es-AR')}\n\n`;
+  }
+  m += `💰 *TOTAL: $${getCartTotal().toLocaleString('es-AR')}*\n\n📲 _Forma de pago a confirmar_`;
+  if (!userLocation) m += `\n📌 _Te comparto mi ubicación por WhatsApp_`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(m)}`, '_blank');
+}
+
+// ---- ADMIN LOGIN ----
+let adminTriggerCount = 0;
+let adminTriggerTimer = null;
+function brandTap() {
+  adminTriggerCount++;
+  clearTimeout(adminTriggerTimer);
+  adminTriggerTimer = setTimeout(() => adminTriggerCount = 0, 2000);
+  if (adminTriggerCount >= 5) { adminTriggerCount = 0; openAdminLogin(); }
+}
+function openAdminLogin() {
+  if (adminUnlocked) { openAdmin(); return; }
+  document.getElementById('loginOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('admin-pwd').focus(), 100);
+}
+function checkAdmin() {
+  const val = document.getElementById('admin-pwd').value;
+  if (val === ADMIN_PWD) {
+    adminUnlocked = true;
+    document.getElementById('loginOverlay').classList.remove('open');
+    document.getElementById('admin-pwd').value = '';
+    openAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('admin-pwd').value = '';
+    setTimeout(() => document.getElementById('login-error').style.display = 'none', 2000);
+  }
+}
+
+// ---- ADMIN ----
+function openAdmin() { renderAdminAll(); document.getElementById('adminOverlay').classList.add('open'); }
+function closeAdmin() { document.getElementById('adminOverlay').classList.remove('open'); }
+function closeAdminOutside(e) { if (e.target.id==='adminOverlay') closeAdmin(); }
+
+function togglePromo(n, on) {
+  catalog.promos[n] = on;
+  document.getElementById('promo-row-'+n)?.classList.toggle('disabled', !on);
+}
+
+function renderAdminSection(containerId, items, showPrice) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = '';
+  items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'admin-row';
+    div.innerHTML = `
+      <div class="admin-row-label">${item.name}<small>Estado: ${item.state}</small></div>
+      ${showPrice?`<input class="admin-input" type="number" value="${item.price}" onchange="catalog.${containerId==='admin-kits'?'kits':containerId==='admin-masas'?'masas':containerId==='admin-muzz'?'muzzVariants':'extras'}[${i}].price=parseInt(this.value)||0">`:''}
+      <div class="state-toggle">
+        <button class="state-btn ${item.state==='disponible'?'act-d':''}" onclick="setItemState('${containerId}',${i},'disponible')">✅</button>
+        <button class="state-btn ${item.state==='encargo'?'act-e':''}"    onclick="setItemState('${containerId}',${i},'encargo')">📋</button>
+        <button class="state-btn ${item.state==='off'?'act-o':''}"        onclick="setItemState('${containerId}',${i},'off')">⛔</button>
+      </div>`;
+    c.appendChild(div);
+  });
+}
+
+function getArrBySection(secId) {
+  const map = { 'admin-kits':catalog.kits,'admin-masas':catalog.masas,'admin-muzz':catalog.muzzVariants,'admin-extras':catalog.extras,'admin-flavors':catalog.flavors };
+  return map[secId];
+}
+
+function setItemState(secId, idx, state) {
+  const arr = getArrBySection(secId);
+  if (!arr) return;
+  arr[idx].state = state;
+  renderAdminSection(secId, arr, secId !== 'admin-flavors');
+}
+
+function renderAdminAll() {
+  renderAdminSection('admin-kits',    catalog.kits,         true);
+  renderAdminSection('admin-masas',   catalog.masas,        true);
+  renderAdminSection('admin-muzz',    catalog.muzzVariants, true);
+  renderAdminSection('admin-extras',  catalog.extras,       true);
+  renderAdminSection('admin-flavors', catalog.flavors,      false);
+  document.getElementById('admin-1doc').value = catalog.prices.doc1;
+  document.getElementById('admin-2doc').value = catalog.prices.doc2;
+  document.getElementById('admin-3doc').value = catalog.prices.doc3;
+  document.getElementById('toggle-promo1').checked = catalog.promos[1];
+  document.getElementById('toggle-promo2').checked = catalog.promos[2];
+  document.getElementById('toggle-promo3').checked = catalog.promos[3];
+}
+
+function addProduct(type) {
+  if (type === 'masa') {
+    const name = document.getElementById('new-masa-name').value.trim();
+    const price = parseInt(document.getElementById('new-masa-price').value)||0;
+    if (!name) return;
+    catalog.masas.push({ id:'masa-'+Date.now(), name, price, state:'disponible' });
+    document.getElementById('new-masa-name').value=''; document.getElementById('new-masa-price').value='';
+  } else if (type === 'muzz') {
+    const name = document.getElementById('new-muzz-name').value.trim();
+    const price = parseInt(document.getElementById('new-muzz-price').value)||0;
+    if (!name) return;
+    catalog.muzzVariants.push({ id:'muzz-'+Date.now(), name, price, state:'disponible' });
+    document.getElementById('new-muzz-name').value=''; document.getElementById('new-muzz-price').value='';
+  } else if (type === 'extra') {
+    const name = document.getElementById('new-extra-name').value.trim();
+    const price = parseInt(document.getElementById('new-extra-price').value)||0;
+    const desc = document.getElementById('new-extra-desc').value.trim();
+    if (!name) return;
+    catalog.extras.push({ id:'ext-'+Date.now(), name, price, state:'disponible', desc });
+    document.getElementById('new-extra-name').value=''; document.getElementById('new-extra-price').value=''; document.getElementById('new-extra-desc').value='';
+  } else if (type === 'emp') {
+    const name = document.getElementById('new-emp-name').value.trim();
+    if (!name) return;
+    catalog.flavors.push({ id:'emp-'+Date.now(), name, state:'disponible' });
+    document.getElementById('new-emp-name').value='';
+  }
+  renderAdminAll();
+}
+
+async function saveAdmin() {
+  catalog.prices.doc1 = parseInt(document.getElementById('admin-1doc').value)||catalog.prices.doc1;
+  catalog.prices.doc2 = parseInt(document.getElementById('admin-2doc').value)||catalog.prices.doc2;
+  catalog.prices.doc3 = parseInt(document.getElementById('admin-3doc').value)||catalog.prices.doc3;
+  await persistCatalog();
+  renderAll();
+  closeAdmin();
+  const btn = document.querySelector('.admin-save-btn');
+  btn.textContent = '✅ ¡Guardado!';
+  setTimeout(() => btn.textContent = '✅ Guardar todos los cambios', 2000);
+}
+
+// ---- INIT ----
+async function init() {
+  const ok = await initSupabase();
+  if (!ok) return;
+  await loadCatalog();
+  document.getElementById('loading').style.display = 'none';
+  renderAll();
+  // Tap secreto en el nombre de la marca (5 veces)
+  document.getElementById('brand-name').addEventListener('click', brandTap);
+}
+
+init();
+</script>
+</body>
+</html>
