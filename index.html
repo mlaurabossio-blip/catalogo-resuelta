@@ -54,6 +54,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .masa-chips,.muzz-chips{display:flex;flex-wrap:wrap;gap:.4rem;}
 .masa-chip,.muzz-chip{padding:.3rem .75rem;border-radius:20px;font-size:.76rem;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--muted);transition:all .15s;user-select:none;}
 .masa-chip.selected-chip,.muzz-chip.selected-chip{background:var(--gold-dim);border-color:var(--gold);color:var(--gold2);}
+.masa-chip.chip-encargo,.muzz-chip.chip-encargo{border-color:rgba(230,126,34,.4);color:var(--amber);background:var(--amber-dim);}
+.masa-chip.chip-encargo.selected-chip,.muzz-chip.chip-encargo.selected-chip{border-color:var(--amber);background:rgba(230,126,34,.25);color:var(--amber);}
 .qty-control{display:flex;align-items:center;gap:.8rem;justify-content:flex-end;margin-top:.5rem;}
 .qty-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;transition:all .15s;}
 .qty-btn:active{transform:scale(.88);}
@@ -423,12 +425,14 @@ function renderKits() {
     const isEncargo = kit.state === 'encargo';
     const availMasas = catalog.masas.filter(m => m.state !== 'off');
     const availMuzz  = catalog.muzzVariants.filter(m => m.state !== 'off');
-    const masaChips = availMasas.map(m =>
-      `<div class="masa-chip ${selectedMasa===m.id?'selected-chip':''}" onclick="selectMasa('${kit.id}','${m.id}')">${m.name}</div>`
-    ).join('');
-    const muzzChips = availMuzz.map(m =>
-      `<div class="muzz-chip ${selectedMuzz===m.id?'selected-chip':''}" onclick="selectMuzz('${kit.id}','${m.id}')">${m.name}${m.price>0?' +$'+m.price.toLocaleString('es-AR'):''}</div>`
-    ).join('');
+    const masaChips = availMasas.map(m => {
+      const isEnc = m.state === 'encargo';
+      return `<div class="masa-chip ${selectedMasa===m.id?'selected-chip':''} ${isEnc?'chip-encargo':''}" onclick="selectMasa('${kit.id}','${m.id}')" title="${isEnc?'Por encargo · entrega lun-mié':''}">${m.name}${isEnc?' 📋':''}</div>`;
+    }).join('');
+    const muzzChips = availMuzz.map(m => {
+      const isEnc = m.state === 'encargo';
+      return `<div class="muzz-chip ${selectedMuzz===m.id?'selected-chip':''} ${isEnc?'chip-encargo':''}" onclick="selectMuzz('${kit.id}','${m.id}')" title="${isEnc?'Por encargo · entrega lun-mié':''}">${m.name}${m.price>0?' +$'+m.price.toLocaleString('es-AR'):''}${isEnc?' 📋':''}</div>`;
+    }).join('');
     const div = document.createElement('div');
     div.className = 'kit-card'+(qty>0?' selected':'');
     div.id = 'kit-card-'+kit.id;
@@ -668,7 +672,9 @@ function sendWA() {
       const muzz = catalog.muzzVariants.find(mm=>mm.id===c.muzz);
       const muzzExtra = muzz&&muzz.price>0?muzz.price:0;
       const unitP = (kit?kit.price:0)+muzzExtra;
-      m += `  • ${c.kitName} x${c.qty}${masa?' · '+masa.name:''}${muzz?' · '+muzz.name:''} = $${(unitP*c.qty).toLocaleString('es-AR')}\n`;
+      const masaEnc = masa?.state==='encargo'?' (📋 encargo)':'';
+      const muzzEnc = muzz?.state==='encargo'?' (📋 encargo)':'';
+      m += `  • ${c.kitName} x${c.qty}${masa?' · '+masa.name+masaEnc:''}${muzz?' · '+muzz.name+muzzEnc:''} = $${(unitP*c.qty).toLocaleString('es-AR')}\n`;
     });
     m += '\n';
   }
