@@ -197,6 +197,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="zona">Bela Vista · Villa Catalina</div>
     <div class="brand" id="brand-tap">Resuelta</div>
     <div class="tagline">Pizza lista para hornear o a la parrilla</div>
+    <div id="admin-tap-hint" style="font-size:9px;color:var(--text3);margin-top:4px;display:none">Tocá "Resuelta" 5 veces para admin</div>
     <div class="pills">
       <span class="pill">💵 Efectivo</span>
       <span class="pill">🏦 Transferencia</span>
@@ -346,10 +347,18 @@ async function init() {
     const {data, error} = await sb.from('catalogo').select('*').eq('id',1).single();
     if (!error && data) {
       const raw = typeof data.data==='string' ? JSON.parse(data.data) : data.data;
-      // Fusionar: si faltan emps, kits o promos en Supabase usar los del default
+      // Fusionar kits: completar masas/muzzarellas si el JSON viejo no las tiene
+      const kits = (raw.kits && raw.kits.length) ? raw.kits.map(rk => {
+        const dk = def.kits.find(d=>d.id===rk.id) || def.kits[0];
+        return {
+          ...rk,
+          masas:       (rk.masas       && rk.masas.length)       ? rk.masas       : (dk?.masas       || []),
+          muzzarellas: (rk.muzzarellas && rk.muzzarellas.length) ? rk.muzzarellas : (dk?.muzzarellas || []),
+        };
+      }) : def.kits;
       catalog = {
-        kits:   (raw.kits   && raw.kits.length)   ? raw.kits   : def.kits,
-        extras: raw.extras  || def.extras,
+        kits,
+        extras: (raw.extras && raw.extras.length) ? raw.extras : def.extras,
         emps:   (raw.emps   && raw.emps.length)   ? raw.emps   : def.emps,
         promos: raw.promos  || def.promos,
       };
