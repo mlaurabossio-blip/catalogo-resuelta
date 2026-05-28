@@ -721,6 +721,25 @@ function capturarGPS() {
 }
 
 // ── WHATSAPP ────────────────────────────────────────────────────
+function calcEmpDesglose(emps, promos) {
+  const docs = emps.reduce((a,e)=>a+e.qty,0);
+  if (!docs) return {lines:[], subtotal:0};
+  const p = promos || {};
+  let rem = docs;
+  const lines = [];
+  let subtotal = 0;
+  if (p[3]) {
+    const n3 = Math.floor(rem/3);
+    if (n3) { lines.push({qty:n3, tipo:'promo3', precio:PRECIO_PROMO[3]}); subtotal+=n3*PRECIO_PROMO[3]; rem-=n3*3; }
+  }
+  if (p[2]) {
+    const n2 = Math.floor(rem/2);
+    if (n2) { lines.push({qty:n2, tipo:'promo2', precio:PRECIO_PROMO[2]}); subtotal+=n2*PRECIO_PROMO[2]; rem-=n2*2; }
+  }
+  if (rem) { lines.push({qty:rem, tipo:'sueltas', precio:PRECIO_PROMO[1]}); subtotal+=rem*PRECIO_PROMO[1]; }
+  return {lines, subtotal};
+}
+
 function sendWA() {
   const nombre=document.getElementById('ent-nombre').value.trim();
   const barrio=document.getElementById('ent-barrio').value;
@@ -729,38 +748,61 @@ function sendWA() {
   if(!selectedPago) return alert('Seleccioná un medio de pago');
   if(getItems()===0) return alert('Tu carrito está vacío');
 
-  let msg=`🍕 *Pedido Resuelta*\n\n👤 *${nombre}*\n📍 ${barrio} — ${dir}\n`;
-  if(gpsCoords) msg+=`🗺️ https://maps.google.com/?q=${gpsCoords.lat},${gpsCoords.lng}\n`;
-  msg+='\n';
+  let msg = '';
+  msg += '🛒 *PEDIDO*\n';
+  msg += `👤 *Cliente:* ${nombre}\n`;
+  msg += `📍 *Barrio:* ${barrio}\n`;
+  msg += `🏠 *Mz/Lote:* ${dir}\n`;
+  if(gpsCoords) msg += `🗺️ https://maps.google.com/?q=${gpsCoords.lat},${gpsCoords.lng}\n`;
+  msg += `💳 *Pago:* ${selectedPago==='efectivo'?'Efectivo':'Transferencia'}\n`;
 
   if(cart.kits.length) {
-    msg+='*Pizzas*\n';
+    msg += '\n*🍕 Pizzas*\n';
     cart.kits.forEach(k=>{
-      msg+=`• ${k.name} ×${k.qty}${k.state==='encargo'?' 📋':''} — $${fmt(k.price*k.qty)}\n`;
-      if(k.masa) msg+=`  Masa: ${k.masa.name}${k.masa.state==='encargo'?' 📋':''}\n`;
-      if(k.muzz) msg+=`  Muzz: ${k.muzz.name}${k.muzz.state==='encargo'?' 📋':''}\n`;
+      msg += `  • ${k.name}${k.qty>1?' ×'+k.qty:''} — $${fmt(k.price*k.qty)}${k.state==='encargo'?' 📋':''}\n`;
+      if(k.masa) msg += `    Masa: ${k.masa.name}${k.masa.state==='encargo'?' 📋':''}\n`;
+      if(k.muzz) msg += `    Muzzarella: ${k.muzz.name}${k.muzz.state==='encargo'?' 📋':''}\n`;
     });
-    msg+='\n';
-  }
-  if(cart.pizzaExtras.length) {
-    msg+='*Extras pizza (sobres)*\n';
-    cart.pizzaExtras.forEach(e=>msg+=`• ${e.name} ×${e.qty} — $${fmt(e.price*e.qty)}\n`);
-    msg+='\n';
-  }
-  if(cart.emps.length) {
-    const docs=cart.emps.reduce((a,e)=>a+e.qty,0);
-    msg+='*Empanadas*\n';
-    cart.emps.forEach(e=>msg+=`• ${e.name}: ${e.qty} doc.\n`);
-    const pl=promoLabel(docs);
-    if(pl) msg+=`🎉 ${pl}\n`;
-    msg+=`Subtotal: $${fmt(bestPrice(docs))}\n\n`;
   }
 
-  msg+=`💰 *Total: $${fmt(getTotal())}*\n`;
-  msg+=`Pago: ${selectedPago==='efectivo'?'💵 Efectivo':'🏦 Transferencia'}\n`;
+  if(cart.pizzaExtras.length) {
+    msg += '\n*➕ Extras pizza*\n';
+    cart.pizzaExtras.forEach(e=>{
+      msg += `  • ${e.name}${e.qty>1?' ×'+e.qty:''} — $${fmt(e.price*e.qty)}\n`;
+    });
+  }
+
+  if(cart.emps.length) {
+    const bd = calcEmpDesglose(cart.emps, catalog.promos||{});
+    msg += '\n*🥟 Empanadas*\n';
+    cart.emps.forEach(e=>{
+      msg += `  • ${e.qty} docena${e.qty>1?'s':''} ${e.name}\n`;
+    });
+    bd.lines.forEach(l=>{
+      if(l.tipo==='promo3') msg += `  • ${l.qty} promo 3 docenas $${fmt(l.precio)}\n`;
+      else if(l.tipo==='promo2') msg += `  • ${l.qty} promo 2 docenas $${fmt(l.precio)}\n`;
+      else msg += `  • ${l.qty} docena${l.qty>1?'s':''} $${fmt(l.precio)}\n`;
+    });
+    msg += `Subtotal: $${fmt(bd.subtotal)}\n`;
+  }
+
+  const total = getTotal();
+  msg += `\n💰 *TOTAL: $${fmt(total)}*\n`;
+
   if(selectedPago==='efectivo') {
     const m=parseFloat(document.getElementById('monto-ef').value)||0;
-    if(m>0) msg+=`Paga con: $${fmt(m)}\n`;
+    if(m>0) {
+      const v=m-total;
+      msg += `💵 Paga con: $${fmt(m)} — Vuelto: $${fmt(Math.abs(v))}${v<0?' (falta)':''}\n`;
+    }
+  }
+
+  if(selectedPago==='transferencia') {
+    msg += '\n📲 *Para pago con transferencia*\n';
+    msg += 'Titular: Maria Laura Bossio\n';
+    msg += 'CVU: 0000076500000000009267\n';
+    msg += `Alias: ${ALIAS}\n`;
+    msg += 'App: Personal Pay\n';
   }
 
   window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`,'_blank');
