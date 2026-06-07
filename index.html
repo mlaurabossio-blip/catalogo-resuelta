@@ -13,7 +13,6 @@
   --coral:#FF6B4A; --coral-l:#FFC5A3; --coral-bg:#FFF2EE;
   --green-bg:#E8F3F2; --green-bd:rgba(14,61,58,0.25);
   --amber:#CC5530; --amber-bg:#FFF2EE; --amber-bd:rgba(255,107,74,0.3);
-  --red:#A32D2D; --red-bg:#FCEBEB; --red-bd:#F5C0C0;
   --text:#0E3D3A; --text2:#4A6663; --text3:#7A9693;
   --wa:#27A65A; --radius:14px;
 }
@@ -84,8 +83,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
 /* CANTIDAD */
 .qty{display:flex;align-items:center;background:var(--green-bg);border:0.5px solid var(--green-bd);border-radius:10px;overflow:hidden;}
-.qb{width:32px;height:32px;background:none;border:none;color:var(--dark);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s;}
-.qb:disabled{opacity:.3;cursor:not-allowed;}
+.qb{width:32px;height:32px;background:none;border:none;color:var(--dark);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .qv{width:24px;text-align:center;font-size:13px;font-weight:700;color:var(--text);}
 
 /* EXTRAS PIZZA */
@@ -104,28 +102,15 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .pitem span{color:var(--coral-l);}
 
 /* EMPANADAS */
-.emp{background:var(--card);border:0.5px solid var(--border);border-radius:11px;margin:0 12px 6px;padding:11px 12px;display:flex;align-items:center;gap:9px;transition:opacity .2s;}
-.emp.sin-stock{opacity:.55;}
+.emp{background:var(--card);border:0.5px solid var(--border);border-radius:11px;margin:0 12px 6px;padding:11px 12px;display:flex;align-items:center;gap:9px;}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--dark);flex-shrink:0;}
 .dot.enc{background:var(--coral);}
-.dot.nostock{background:var(--red);}
 .emp-info{flex:1;min-width:0;}
 .emp-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .emp-st{font-size:9px;font-weight:500;color:var(--text2);margin-top:1px;}
 .emp-st.enc{color:var(--coral);}
-.emp-st.nostock{color:var(--red);}
 .emp-pr{font-size:13px;font-weight:700;color:var(--coral);margin-right:7px;white-space:nowrap;letter-spacing:-0.2px;}
 .emp-psub{font-size:9px;color:var(--text3);}
-
-/* STOCK BADGE */
-.stock-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:600;border-radius:6px;padding:2px 7px;margin-top:3px;}
-.stock-badge.ok{color:var(--dark);background:var(--green-bg);}
-.stock-badge.low{color:var(--amber);background:var(--amber-bg);}
-.stock-badge.none{color:var(--red);background:var(--red-bg);}
-
-/* STOCK WARNING inline */
-.stock-warn{font-size:10px;font-weight:500;color:var(--red);background:var(--red-bg);border:0.5px solid var(--red-bd);border-radius:7px;padding:4px 8px;margin-top:4px;display:none;}
-.stock-warn.show{display:block;}
 
 /* CARRITO BAR */
 .cart-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;display:flex;justify-content:center;padding:10px 12px 22px;background:linear-gradient(transparent,rgba(255,246,238,0.98) 28%);}
@@ -182,7 +167,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .admin-row:last-child{border-bottom:none;}
 .admin-row-name{flex:1;font-size:12px;color:var(--text);font-weight:500;}
 .admin-input{width:86px;padding:5px 8px;background:var(--card);border:0.5px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:'Inter',sans-serif;}
-.admin-stock-input{width:58px;padding:5px 8px;background:var(--card);border:0.5px solid var(--amber-bd);border-radius:8px;color:var(--text);font-size:12px;font-family:'Inter',sans-serif;}
 .state-btn{padding:4px 8px;border-radius:7px;font-size:10px;font-weight:600;cursor:pointer;border:0.5px solid var(--border);background:var(--border2);color:var(--text2);}
 .state-btn.s-on{background:var(--green-bg);color:var(--dark);border-color:var(--green-bd);}
 .state-btn.s-enc{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd);}
@@ -296,11 +280,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     <div class="fields-wrap">
       <input class="field" type="text" id="ent-nombre" placeholder="Tu nombre">
       <select class="field" id="ent-barrio">
-        <option value="">Seleccioná tu barrio</option>
-        <option value="Villa Catalina">Villa Catalina</option>
-        <option value="Bela Vista">Bela Vista</option>
-        <option value="Otros">Otros</option>
-      </select>
+  <option value="">Seleccioná tu barrio</option>
+  <option value="Villa Catalina">Villa Catalina</option>
+  <option value="Bela Vista">Bela Vista</option>
+  <option value="Otros">Otros</option>
+</select>
       <input class="field" type="text" id="ent-dir" placeholder="Manzana y lote / dirección">
       <button class="btn-gps" onclick="capturarGPS()">📍 Compartir mi ubicación GPS</button>
       <div class="note-gps">También podés compartirla desde WhatsApp</div>
@@ -346,7 +330,6 @@ const PRECIO_PROMO  = {1:17000, 2:32000, 3:47000};
 // ── ESTADO ──────────────────────────────────────────────────────
 const sb = supabase.createClient(SB_URL, SB_KEY);
 let catalog = null;
-let stockMap = {};  // { empId: docenas_disponibles }
 let cart = {kits:[], pizzaExtras:[], emps:[]};
 let selectedPago = null;
 let gpsCoords = null;
@@ -409,13 +392,9 @@ function defaultCatalog() {
 async function init() {
   const def = defaultCatalog();
   try {
-    const [catRes, stockRes] = await Promise.all([
-      sb.from('catalogo').select('*').eq('id',1).single(),
-      sb.from('stock_empanadas').select('*')
-    ]);
-
-    if (!catRes.error && catRes.data) {
-      const raw = typeof catRes.data.data==='string' ? JSON.parse(catRes.data.data) : catRes.data.data;
+    const {data, error} = await sb.from('catalogo').select('*').eq('id',1).single();
+    if (!error && data) {
+      const raw = typeof data.data==='string' ? JSON.parse(data.data) : data.data;
       const kits = (raw.kits && raw.kits.length) ? raw.kits.map(rk => {
         const dk = def.kits.find(d=>d.id===rk.id) || def.kits[0];
         return {
@@ -434,11 +413,6 @@ async function init() {
       catalog = def;
       await saveCatalog();
     }
-
-    // Cargar stock
-    if (!stockRes.error && stockRes.data) {
-      stockRes.data.forEach(row => { stockMap[row.id] = Number(row.stock); });
-    }
   } catch(e) {
     catalog = def;
   }
@@ -446,9 +420,6 @@ async function init() {
   document.getElementById('loading').style.display = 'none';
   document.getElementById('app').style.display = 'block';
 }
-
-// ── HELPERS STOCK ────────────────────────────────────────────────
-function stockTotal(empId) { return stockMap[empId] ?? null; }
 
 // ── RENDER ──────────────────────────────────────────────────────
 function renderAll() {
@@ -562,77 +533,23 @@ function renderPizzaExtras() {
 
 function renderEmps() {
   const emps = (catalog.emps||[]).filter(e=>e.state!=='off');
-  document.getElementById('emp-container').innerHTML = emps.map(e => {
-    const st = stockTotal(e.id);
-    const sinStock = st !== null && st === 0;
-    const stockBajo = st !== null && st > 0 && st <= 2;
-
-    let statusLabel, statusClass, dotClass;
-    if (sinStock) {
-      statusLabel = 'Sin stock hoy';
-      statusClass = 'nostock';
-      dotClass = 'nostock';
-    } else if (e.state === 'encargo') {
-      statusLabel = '📋 Por encargo';
-      statusClass = 'enc';
-      dotClass = 'enc';
-    } else {
-      statusLabel = '✓ Disponible';
-      statusClass = '';
-      dotClass = '';
-    }
-
-    let stockInfo = '';
-    if (st !== null && !sinStock) {
-      if (stockBajo) {
-        stockInfo = `<div class="stock-badge low">⚠️ Últimas ${st} doc.</div>`;
-      } else {
-        stockInfo = `<div class="stock-badge ok">📦 ${st} doc. disp.</div>`;
-      }
-    }
-
-    return `
-    <div class="emp${sinStock?' sin-stock':''}" id="emp-row-${e.id}">
-      <div class="dot${dotClass?' '+dotClass:''}"></div>
+  document.getElementById('emp-container').innerHTML = emps.map(e=>`
+    <div class="emp">
+      <div class="dot${e.state==='encargo'?' enc':''}"></div>
       <div class="emp-info">
         <div class="emp-name">${e.name}</div>
-        <div class="emp-st${statusClass?' '+statusClass:''}">${statusLabel}</div>
-        ${stockInfo}
+        <div class="emp-st${e.state==='encargo'?' enc':''}">${e.state==='encargo'?'📋 Por encargo':'✓ Disponible'}</div>
       </div>
       <div style="text-align:right;margin-right:8px">
         <div class="emp-pr">$${fmt(e.price)}</div>
         <div class="emp-psub">por docena</div>
       </div>
-      <div>
-        <div class="qty">
-          <button class="qb" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},-1)">−</button>
-          <div class="qv" id="qty-em-${e.id}">0</div>
-          <button class="qb" id="btn-plus-${e.id}" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},1)"${sinStock?' disabled':''}>+</button>
-        </div>
-        <div class="stock-warn" id="sw-${e.id}"></div>
+      <div class="qty">
+        <button class="qb" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},-1)">−</button>
+        <div class="qv" id="qty-em-${e.id}">0</div>
+        <button class="qb" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},1)">+</button>
       </div>
-    </div>`;
-  }).join('');
-}
-
-function refreshEmpStockUI() {
-  (catalog.emps||[]).filter(e=>e.state!=='off').forEach(e => {
-    const st = stockTotal(e.id);
-    if (st === null) return;
-    const enCarrito = cart.emps.find(c=>c.id===e.id)?.qty || 0;
-    const disponible = Math.max(0, st - enCarrito);
-    const plusBtn = document.getElementById('btn-plus-'+e.id);
-    if (plusBtn) plusBtn.disabled = disponible === 0;
-    const warnEl = document.getElementById('sw-'+e.id);
-    if (warnEl) {
-      if (enCarrito > 0 && disponible === 0 && st > 0) {
-        warnEl.textContent = `Máximo disponible: ${st} doc.`;
-        warnEl.classList.add('show');
-      } else {
-        warnEl.classList.remove('show');
-      }
-    }
-  });
+    </div>`).join('');
 }
 
 // ── TABS ────────────────────────────────────────────────────────
@@ -692,27 +609,11 @@ function changePizzaExtraQty(id, name, price, delta) {
 }
 
 function changeEmpQty(id, name, price, delta) {
-  const st = stockTotal(id);
-
-  if (delta > 0 && st !== null) {
-    const enCarrito = cart.emps.find(e=>e.id===id)?.qty || 0;
-    if (enCarrito >= st) {
-      const warnEl = document.getElementById('sw-'+id);
-      if (warnEl) {
-        warnEl.textContent = st === 0 ? 'Sin stock disponible hoy' : `Stock insuficiente — quedan ${st} doc.`;
-        warnEl.classList.add('show');
-        setTimeout(()=>warnEl.classList.remove('show'), 3000);
-      }
-      return;
-    }
-  }
-
   const ex = cart.emps.find(e=>e.id===id);
   if (ex) { ex.qty=Math.max(0,ex.qty+delta); if(ex.qty===0) cart.emps=cart.emps.filter(e=>e.id!==id); }
   else if (delta>0) cart.emps.push({id,name,price,qty:1});
   const el = document.getElementById('qty-em-'+id);
   if (el) el.textContent = cart.emps.find(e=>e.id===id)?.qty||0;
-  refreshEmpStockUI();
   updateCartBar();
 }
 
@@ -827,9 +728,15 @@ function calcEmpDesglose(emps, promos) {
   let rem = docs;
   const lines = [];
   let subtotal = 0;
-  if (p[3]) { const n3=Math.floor(rem/3); if(n3){lines.push({qty:n3,tipo:'promo3',precio:PRECIO_PROMO[3]});subtotal+=n3*PRECIO_PROMO[3];rem-=n3*3;} }
-  if (p[2]) { const n2=Math.floor(rem/2); if(n2){lines.push({qty:n2,tipo:'promo2',precio:PRECIO_PROMO[2]});subtotal+=n2*PRECIO_PROMO[2];rem-=n2*2;} }
-  if (rem) { lines.push({qty:rem,tipo:'sueltas',precio:PRECIO_PROMO[1]});subtotal+=rem*PRECIO_PROMO[1]; }
+  if (p[3]) {
+    const n3 = Math.floor(rem/3);
+    if (n3) { lines.push({qty:n3, tipo:'promo3', precio:PRECIO_PROMO[3]}); subtotal+=n3*PRECIO_PROMO[3]; rem-=n3*3; }
+  }
+  if (p[2]) {
+    const n2 = Math.floor(rem/2);
+    if (n2) { lines.push({qty:n2, tipo:'promo2', precio:PRECIO_PROMO[2]}); subtotal+=n2*PRECIO_PROMO[2]; rem-=n2*2; }
+  }
+  if (rem) { lines.push({qty:rem, tipo:'sueltas', precio:PRECIO_PROMO[1]}); subtotal+=rem*PRECIO_PROMO[1]; }
   return {lines, subtotal};
 }
 
@@ -860,13 +767,17 @@ function sendWA() {
 
   if(cart.pizzaExtras.length) {
     msg += '\n*➕ Extras pizza*\n';
-    cart.pizzaExtras.forEach(e=>{ msg += `  • ${e.name}${e.qty>1?' ×'+e.qty:''} — $${fmt(e.price*e.qty)}\n`; });
+    cart.pizzaExtras.forEach(e=>{
+      msg += `  • ${e.name}${e.qty>1?' ×'+e.qty:''} — $${fmt(e.price*e.qty)}\n`;
+    });
   }
 
   if(cart.emps.length) {
     const bd = calcEmpDesglose(cart.emps, catalog.promos||{});
     msg += '\n*🥟 Empanadas*\n';
-    cart.emps.forEach(e=>{ msg += `  • ${e.qty} docena${e.qty>1?'s':''} ${e.name}\n`; });
+    cart.emps.forEach(e=>{
+      msg += `  • ${e.qty} docena${e.qty>1?'s':''} ${e.name}\n`;
+    });
     bd.lines.forEach(l=>{
       if(l.tipo==='promo3') msg += `  • ${l.qty} promo 3 docenas $${fmt(l.precio)}\n`;
       else if(l.tipo==='promo2') msg += `  • ${l.qty} promo 2 docenas $${fmt(l.precio)}\n`;
@@ -877,12 +788,15 @@ function sendWA() {
 
   const total = getTotal();
   msg += `\n💰 *TOTAL: $${fmt(total)}*\n`;
-  msg += `💳 *Pago:* ${selectedPago==='efectivo'?'Efectivo':'Transferencia'}\n`;
 
   if(selectedPago==='efectivo') {
     const m=parseFloat(document.getElementById('monto-ef').value)||0;
-    if(m>0) { const v=m-total; msg += `💵 Paga con: $${fmt(m)} — Vuelto: $${fmt(Math.abs(v))}${v<0?' (falta)':''}\n`; }
+    if(m>0) {
+      const v=m-total;
+      msg += `💵 Paga con: $${fmt(m)} — Vuelto: $${fmt(Math.abs(v))}${v<0?' (falta)':''}\n`;
+    }
   }
+
   if(selectedPago==='transferencia') {
     msg += '\n📲 *Para pago con transferencia*\n';
     msg += 'Titular: Maria Laura Bossio\n';
@@ -918,7 +832,7 @@ function checkPwd(){
 function renderAdmin(){
   let html='';
 
-  // Promos
+  // Promos empanadas
   html+=`<div class="admin-sec-title">Promos empanadas</div>`;
   [2,3].forEach(n=>{
     html+=`<div class="toggle-row"><label>Promo ×${n} docenas — $${fmt(PRECIO_PROMO[n])}</label>
@@ -933,16 +847,20 @@ function renderAdmin(){
       <input class="admin-input" type="number" id="kp-${ki}" value="${k.price}">
       ${['on','encargo','off'].map(s=>`<button class="state-btn${k.state===s?' s-'+s:''}" onclick="setKitState(${ki},'${s}',this)">${s}</button>`).join('')}
     </div>`;
+
+    // Masas del kit
     html+=`<div style="padding-left:12px;border-left:2px solid var(--border2);margin:2px 0 6px">`;
-    html+=`<div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:4px 0">Masas</div>`;
+    html+=`<div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:4px 0 4px">Masas</div>`;
     (k.masas||[]).forEach((m,mi)=>{
-      html+=`<div class="admin-row"><div class="admin-row-name" style="font-size:11px">${m.name}</div>
+      html+=`<div class="admin-row">
+        <div class="admin-row-name" style="font-size:11px">${m.name}</div>
         ${['on','encargo','off'].map(s=>`<button class="state-btn${m.state===s?' s-'+s:''}" onclick="setMasaState(${ki},${mi},'${s}',this)">${s}</button>`).join('')}
       </div>`;
     });
     html+=`<div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:8px 0 4px">Muzzarellas</div>`;
     (k.muzzarellas||[]).forEach((mz,mzi)=>{
-      html+=`<div class="admin-row"><div class="admin-row-name" style="font-size:11px">${mz.name}</div>
+      html+=`<div class="admin-row">
+        <div class="admin-row-name" style="font-size:11px">${mz.name}</div>
         <input class="admin-input" type="number" id="mzp-${ki}-${mzi}" value="${mz.price}" style="width:70px">
         ${['on','encargo','off'].map(s=>`<button class="state-btn${mz.state===s?' s-'+s:''}" onclick="setMuzzState(${ki},${mzi},'${s}',this)">${s}</button>`).join('')}
       </div>`;
@@ -953,32 +871,20 @@ function renderAdmin(){
   // Extras pizza
   html+=`<div class="admin-sec-title">Extras de pizza</div>`;
   (catalog.pizzaExtras||[]).forEach((ex,i)=>{
-    html+=`<div class="admin-row"><div class="admin-row-name">${ex.name}</div>
+    html+=`<div class="admin-row">
+      <div class="admin-row-name">${ex.name}</div>
       <input class="admin-input" type="number" id="pxp-${i}" value="${ex.price}">
       ${['on','encargo','off'].map(s=>`<button class="state-btn${ex.state===s?' s-'+s:''}" onclick="setPizzaExtraState(${i},'${s}',this)">${s}</button>`).join('')}
     </div>`;
   });
 
-  // Empanadas + stock manual
+  // Empanadas
   html+=`<div class="admin-sec-title">Empanadas</div>`;
-  html+=`<div style="font-size:10px;color:var(--amber);background:var(--amber-bg);border:0.5px solid var(--amber-bd);border-radius:9px;padding:8px 11px;margin-bottom:8px;">
-    📦 El stock se descuenta automáticamente al registrar ventas. Acá podés ajustarlo manualmente.
-  </div>`;
   (catalog.emps||[]).forEach((e,i)=>{
-    const st = stockMap[e.id] ?? 0;
     html+=`<div class="admin-row">
       <div class="admin-row-name">${e.name}</div>
-      <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end">
-        <input class="admin-input" type="number" id="ep-${i}" value="${e.price}">
-        <div style="display:flex;align-items:center;gap:4px">
-          <span style="font-size:9px;color:var(--text3)">Stock:</span>
-          <input class="admin-stock-input" type="number" min="0" id="est-${e.id}" value="${st}">
-          <span style="font-size:9px;color:var(--text3)">doc</span>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:3px">
-        ${['on','encargo','off'].map(s=>`<button class="state-btn${e.state===s?' s-'+s:''}" onclick="setEmpState(${i},'${s}',this)">${s}</button>`).join('')}
-      </div>
+      <input class="admin-input" type="number" id="ep-${i}" value="${e.price}">
+      ${['on','encargo','off'].map(s=>`<button class="state-btn${e.state===s?' s-'+s:''}" onclick="setEmpState(${i},'${s}',this)">${s}</button>`).join('')}
     </div>`;
   });
 
@@ -993,28 +899,34 @@ function setEmpState(i,s,btn){ catalog.emps[i].state=s; updateStateBtns(btn); }
 
 function updateStateBtns(btn){
   btn.closest('.admin-row').querySelectorAll('.state-btn').forEach(b=>b.className='state-btn');
-  btn.className=`state-btn s-${btn.textContent.trim()}`;
+  const s=btn.textContent.trim();
+  btn.className=`state-btn s-${s}`;
 }
 
 async function saveAdmin(){
+  // Kits precios
   (catalog.kits||[]).forEach((k,ki)=>{
-    const el=document.getElementById(`kp-${ki}`);if(el)k.price=parseFloat(el.value)||k.price;
-    (k.muzzarellas||[]).forEach((mz,mzi)=>{const elMz=document.getElementById(`mzp-${ki}-${mzi}`);if(elMz)mz.price=parseFloat(elMz.value)||0;});
+    const el=document.getElementById(`kp-${ki}`);
+    if(el) k.price=parseFloat(el.value)||k.price;
+    // Muzz precios
+    (k.muzzarellas||[]).forEach((mz,mzi)=>{
+      const elMz=document.getElementById(`mzp-${ki}-${mzi}`);
+      if(elMz) mz.price=parseFloat(elMz.value)||0;
+    });
   });
-  (catalog.pizzaExtras||[]).forEach((ex,i)=>{const el=document.getElementById(`pxp-${i}`);if(el)ex.price=parseFloat(el.value)||ex.price;});
-  (catalog.emps||[]).forEach((e,i)=>{const el=document.getElementById(`ep-${i}`);if(el)e.price=parseFloat(el.value)||e.price;});
-  if(!catalog.promos)catalog.promos={};
+  // Extras pizza precios
+  (catalog.pizzaExtras||[]).forEach((ex,i)=>{
+    const el=document.getElementById(`pxp-${i}`);
+    if(el) ex.price=parseFloat(el.value)||ex.price;
+  });
+  // Empanadas precios
+  (catalog.emps||[]).forEach((e,i)=>{
+    const el=document.getElementById(`ep-${i}`);
+    if(el) e.price=parseFloat(el.value)||e.price;
+  });
+  // Promos
+  if(!catalog.promos) catalog.promos={};
   [2,3].forEach(n=>{const el=document.getElementById(`pt-${n}`);if(el)catalog.promos[n]=el.checked;});
-
-  // Guardar stock manual
-  const stockUpdates=(catalog.emps||[]).map(e=>{
-    const el=document.getElementById(`est-${e.id}`);
-    const val=el?Math.max(0,parseInt(el.value)||0):(stockMap[e.id]||0);
-    stockMap[e.id]=val;
-    return {id:e.id,nombre:e.name,stock:val,updated_at:new Date().toISOString()};
-  });
-  await sb.from('stock_empanadas').upsert(stockUpdates,{onConflict:'id'});
-
   await saveCatalog();
   renderAll();
   closeAdmin();
@@ -1030,5 +942,4 @@ function fmt(n){return Math.round(n).toLocaleString('es-AR');}
 init();
 </script>
 </body>
-</html>
 </html>
