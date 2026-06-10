@@ -60,13 +60,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .b-sold{font-size:9px;font-weight:700;background:var(--coral);color:#fff;border-radius:20px;padding:3px 10px;letter-spacing:.02em;}
 .b-disp{font-size:9px;font-weight:600;color:var(--dark);background:var(--green-bg);border:0.5px solid var(--green-bd);border-radius:20px;padding:3px 9px;}
 .b-enc{font-size:9px;font-weight:600;color:var(--amber);background:var(--amber-bg);border:0.5px solid var(--amber-bd);border-radius:20px;padding:3px 9px;}
-.b-out{font-size:9px;font-weight:600;color:#A32D2D;background:#FDE8E8;border:0.5px solid #F5C0C0;border-radius:20px;padding:3px 9px;}
 .kit-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-0.2px;}
 .tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;}
 .tag{font-size:9px;font-weight:500;color:var(--text2);background:var(--green-bg);border:0.5px solid var(--border);border-radius:6px;padding:2px 8px;}
-.tag.stock-ok{color:var(--dark);background:var(--green-bg);border-color:var(--green-bd);}
-.tag.stock-low{color:#CC5530;background:#FFF2EE;border-color:rgba(255,107,74,0.3);}
-.tag.stock-out{color:#A32D2D;background:#FDE8E8;border-color:#F5C0C0;}
 .kit-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;}
 .price{font-size:22px;font-weight:700;color:var(--coral);letter-spacing:-0.5px;}
 .psub{font-size:9px;color:var(--text3);}
@@ -76,13 +72,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .opts-lbl{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
 .opt{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:10px;border:0.5px solid var(--border);margin-bottom:4px;background:var(--bg);cursor:pointer;transition:all .15s;}
 .opt.on{border-color:var(--coral);background:var(--coral-bg);}
-.opt.disabled{opacity:0.45;cursor:not-allowed;}
 .opt-left{display:flex;align-items:center;gap:8px;}
 .radio{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(14,61,58,0.3);flex-shrink:0;transition:all .15s;}
 .opt.on .radio{border-color:var(--coral);background:var(--coral);}
 .opt-name{font-size:11px;font-weight:500;color:var(--text);}
 .opt-enc-badge{font-size:8px;font-weight:600;color:var(--amber);background:var(--amber-bg);border:0.5px solid var(--amber-bd);border-radius:8px;padding:1px 6px;margin-left:4px;}
-.opt-out-badge{font-size:8px;font-weight:600;color:#A32D2D;background:#FDE8E8;border:0.5px solid #F5C0C0;border-radius:8px;padding:1px 6px;margin-left:4px;}
 .opt-extra{font-size:11px;font-weight:500;color:var(--text2);}
 .enc-note{font-size:11px;color:var(--amber);background:var(--amber-bg);border:0.5px solid var(--amber-bd);border-radius:8px;padding:7px 10px;margin-top:5px;display:none;}
 .enc-note.show{display:block;}
@@ -90,7 +84,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 /* CANTIDAD */
 .qty{display:flex;align-items:center;background:var(--green-bg);border:0.5px solid var(--green-bd);border-radius:10px;overflow:hidden;}
 .qb{width:32px;height:32px;background:none;border:none;color:var(--dark);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.qb:disabled{opacity:0.3;cursor:not-allowed;}
 .qv{width:24px;text-align:center;font-size:13px;font-weight:700;color:var(--text);}
 
 /* EXTRAS PIZZA */
@@ -110,15 +103,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
 /* EMPANADAS */
 .emp{background:var(--card);border:0.5px solid var(--border);border-radius:11px;margin:0 12px 6px;padding:11px 12px;display:flex;align-items:center;gap:9px;}
-.emp.out-of-stock{opacity:0.55;}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--dark);flex-shrink:0;}
 .dot.enc{background:var(--coral);}
-.dot.out{background:#A32D2D;}
 .emp-info{flex:1;min-width:0;}
 .emp-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .emp-st{font-size:9px;font-weight:500;color:var(--text2);margin-top:1px;}
 .emp-st.enc{color:var(--coral);}
-.emp-st.out{color:#A32D2D;}
 .emp-pr{font-size:13px;font-weight:700;color:var(--coral);margin-right:7px;white-space:nowrap;letter-spacing:-0.2px;}
 .emp-psub{font-size:9px;color:var(--text3);}
 
@@ -179,7 +169,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .admin-input{width:86px;padding:5px 8px;background:var(--card);border:0.5px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:'Inter',sans-serif;}
 .state-btn{padding:4px 8px;border-radius:7px;font-size:10px;font-weight:600;cursor:pointer;border:0.5px solid var(--border);background:var(--border2);color:var(--text2);}
 .state-btn.s-on{background:var(--green-bg);color:var(--dark);border-color:var(--green-bd);}
-.state-btn.s-encargo{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd);}
+.state-btn.s-enc{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd);}
 .state-btn.s-off{background:#FDE8E8;color:#A32D2D;border-color:#F5C0C0;}
 .toggle-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border2);}
 .toggle-row:last-child{border-bottom:none;}
@@ -196,12 +186,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .login-input{width:100%;padding:12px 13px;background:var(--card);border:0.5px solid var(--border);border-radius:11px;color:var(--text);font-size:14px;margin-bottom:10px;font-family:'Inter',sans-serif;}
 .login-err{font-size:12px;color:#A32D2D;margin-bottom:8px;display:none;}
 .btn-login{width:100%;padding:13px;background:var(--coral);border:none;border-radius:11px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;}
-
-/* STOCK BADGE en admin */
-.stock-badge{font-size:9px;font-weight:600;border-radius:6px;padding:2px 7px;margin-left:4px;}
-.stock-badge.ok{color:var(--dark);background:var(--green-bg);}
-.stock-badge.low{color:#CC5530;background:#FFF2EE;}
-.stock-badge.out{color:#A32D2D;background:#FDE8E8;}
 </style>
 </head>
 <body>
@@ -215,13 +199,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div id="app" style="display:none">
 
   <div class="hdr">
-    <div class="zona">Villa Catalina · Bela Vista</div>
+    <div class="zona">Villa Catalina-Bela Vista</div>
     <div class="brand" id="brand-tap">Re<span>suelta</span></div>
     <div class="tagline">Pizza lista para hornear o a la parrilla</div>
     <div class="pills">
       <span class="pill">💵 Efectivo</span>
       <span class="pill">🏦 Transferencia</span>
-      <span class="pill">📍 Villa Catalina · Bela Vista</span>
+      <span class="pill">📍 Villa Catalina-Bela Vista</span>
     </div>
   </div>
 
@@ -296,11 +280,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     <div class="fields-wrap">
       <input class="field" type="text" id="ent-nombre" placeholder="Tu nombre">
       <select class="field" id="ent-barrio">
-        <option value="">Seleccioná tu barrio</option>
-        <option value="Villa Catalina">Villa Catalina</option>
-        <option value="Bela Vista">Bela Vista</option>
-        <option value="Otros">Otros</option>
-      </select>
+  <option value="">Seleccioná tu barrio</option>
+  <option value="Villa Catalina">Villa Catalina</option>
+  <option value="Bela Vista">Bela Vista</option>
+  <option value="Otros">Otros</option>
+</select>
       <input class="field" type="text" id="ent-dir" placeholder="Manzana y lote / dirección">
       <button class="btn-gps" onclick="capturarGPS()">📍 Compartir mi ubicación GPS</button>
       <div class="note-gps">También podés compartirla desde WhatsApp</div>
@@ -334,36 +318,21 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
 <script>
 // ── CONFIG ──────────────────────────────────────────────────────
-const SB_URL    = 'https://hydiqptsijsjhcahkrxp.supabase.co';
-const SB_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5ZGlxcHRzaWpzamhjYWhrcnhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0OTMwNTAsImV4cCI6MjA5MzA2OTA1MH0.eLdU6LbdMgdZcQXxtX4oXeIe84gawhpya3t6cehlQ9E';
-const WA_NUM    = '5493517479679';
-const ALIAS     = 'mlbossio.ppay';
+const SB_URL = 'https://hydiqptsijsjhcahkrxp.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5ZGlxcHRzaWpzamhjYWhrcnhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0OTMwNTAsImV4cCI6MjA5MzA2OTA1MH0.eLdU6LbdMgdZcQXxtX4oXeIe84gawhpya3t6cehlQ9E';
+const WA_NUM = '5493517479679';
+const ALIAS  = 'mlbossio.ppay';
 const ADMIN_PWD = 'Simon*2018';
 const IMG_PIZZAS    = 'https://hydiqptsijsjhcahkrxp.supabase.co/storage/v1/object/public/Imagenes/hero-pizza.png';
 const IMG_EMPANADAS = 'https://hydiqptsijsjhcahkrxp.supabase.co/storage/v1/object/public/Imagenes/hero-empanadas.jpg';
 const PRECIO_PROMO  = {1:17000, 2:32000, 3:47000};
 
-// Mapa catálogo-ID → producto interno (para stock)
-const CATALOGO_ID_MAP = {
-  'k10': 'pizza-kit-10',
-  'k5':  'pizza-kit-5',
-  'e1':  'emp-jym',
-  'e2':  'emp-ber',
-  'e3':  'emp-sal',
-  'e4':  'emp-cri',
-  'e5':  'emp-pol',
-  'e6':  'emp-ara',
-  'e7':  'emp-cho',
-  'e8':  'emp-cor',
-};
-
 // ── ESTADO ──────────────────────────────────────────────────────
 const sb = supabase.createClient(SB_URL, SB_KEY);
-let catalog  = null;
-let stock    = {};   // { catalogId: stockNumber }
-let cart     = {kits:[], pizzaExtras:[], emps:[]};
-let selectedPago  = null;
-let gpsCoords     = null;
+let catalog = null;
+let cart = {kits:[], pizzaExtras:[], emps:[]};
+let selectedPago = null;
+let gpsCoords = null;
 let adminUnlocked = false;
 let tapCount = 0, tapTimer = null;
 
@@ -379,10 +348,10 @@ function defaultCatalog() {
           {id:'m3', name:'Media masa',   state:'on',      price:0}
         ],
         muzzarellas:[
-          {id:'mz1', name:'Clásica',                   state:'on',      price:0},
-          {id:'mz2', name:'Con trocitos de Jamón',     state:'on',      price:500},
-          {id:'mz3', name:'Con trocitos de Salame',    state:'on',      price:500},
-          {id:'mz4', name:'Con trocitos de Roquefort', state:'encargo', price:800}
+          {id:'mz1', name:'Clásica',                        state:'on',  price:0},
+          {id:'mz2', name:'Con trocitos de Jamón',          state:'on',  price:500},
+          {id:'mz3', name:'Con trocitos de Salame',         state:'on',  price:500},
+          {id:'mz4', name:'Con trocitos de Roquefort',      state:'encargo', price:800}
         ]
       },
       {
@@ -393,27 +362,27 @@ function defaultCatalog() {
           {id:'m3', name:'Media masa',   state:'on',      price:0}
         ],
         muzzarellas:[
-          {id:'mz1', name:'Clásica',                   state:'on',      price:0},
-          {id:'mz2', name:'Con trocitos de Jamón',     state:'on',      price:500},
-          {id:'mz3', name:'Con trocitos de Salame',    state:'on',      price:500},
-          {id:'mz4', name:'Con trocitos de Roquefort', state:'encargo', price:800}
+          {id:'mz1', name:'Clásica',                        state:'on',  price:0},
+          {id:'mz2', name:'Con trocitos de Jamón',          state:'on',  price:500},
+          {id:'mz3', name:'Con trocitos de Salame',         state:'on',  price:500},
+          {id:'mz4', name:'Con trocitos de Roquefort',      state:'encargo', price:800}
         ]
       }
     ],
     pizzaExtras:[
-      {id:'px1', name:'Extra Premium de Champiñones',         desc:'Envasado en sobre separado', price:3000, state:'on'},
-      {id:'px2', name:'Extra Gourmet de 4 Quesos',            desc:'Envasado en sobre separado', price:3500, state:'on'},
-      {id:'px3', name:'Extra Gourmet de Cebolla Caramelizada',desc:'Envasado en sobre separado', price:3000, state:'on'}
+      {id:'px1', name:'Extra Premium de Champiñones',        desc:'Envasado en sobre separado', price:3000, state:'on'},
+      {id:'px2', name:'Extra Gourmet de 4 Quesos',           desc:'Envasado en sobre separado', price:3500, state:'on'},
+      {id:'px3', name:'Extra Gourmet de Cebolla Caramelizada', desc:'Envasado en sobre separado', price:3000, state:'on'}
     ],
     emps:[
-      {id:'e1', name:'Jamón y Muzzarella',          price:17000, state:'on'},
-      {id:'e2', name:'Berenjena, cebolla y hongos', price:17000, state:'on'},
-      {id:'e3', name:'Salteñas cortada a cuchillo', price:17000, state:'on'},
-      {id:'e4', name:'Criollas',                    price:17000, state:'on'},
-      {id:'e5', name:'Pollo',                       price:17000, state:'encargo'},
-      {id:'e6', name:'Árabes',                      price:17000, state:'encargo'},
-      {id:'e7', name:'Chorizo y verduras',          price:17000, state:'on'},
-      {id:'e8', name:'Cordobesas Dulces',           price:17000, state:'encargo'}
+      {id:'e1', name:'Jamón y Muzzarella',              price:15000, state:'on'},
+      {id:'e2', name:'Berenjena, cebolla y hongos',     price:15000, state:'on'},
+      {id:'e3', name:'Salteñas cortada a cuchillo',     price:15000, state:'on'},
+      {id:'e4', name:'Criollas',                        price:15000, state:'on'},
+      {id:'e5', name:'Pollo',                           price:15000, state:'encargo'},
+      {id:'e6', name:'Árabes',                          price:15000, state:'encargo'},
+      {id:'e7', name:'Chorizo y verduras',              price:15000, state:'on'},
+      {id:'e8', name:'Cordobesas Dulces',               price:15000, state:'encargo'}
     ],
     promos:{2:true, 3:true}
   };
@@ -423,18 +392,9 @@ function defaultCatalog() {
 async function init() {
   const def = defaultCatalog();
   try {
-    const [{data: catData, error: catErr}, {data: compras}, {data: ventas}] = await Promise.all([
-      sb.from('catalogo').select('*').eq('id',1).single(),
-      sb.from('compras').select('producto,cantidad'),
-      sb.from('ventas').select('producto,tipo,variedad,docenas,cantidad,items_json'),
-    ]);
-
-    // ── Stock calculado ──────────────────────────────────────────
-    stock = calcStock(compras||[], ventas||[]);
-
-    // ── Catálogo ─────────────────────────────────────────────────
-    if (!catErr && catData) {
-      const raw = typeof catData.data==='string' ? JSON.parse(catData.data) : catData.data;
+    const {data, error} = await sb.from('catalogo').select('*').eq('id',1).single();
+    if (!error && data) {
+      const raw = typeof data.data==='string' ? JSON.parse(data.data) : data.data;
       const kits = (raw.kits && raw.kits.length) ? raw.kits.map(rk => {
         const dk = def.kits.find(d=>d.id===rk.id) || def.kits[0];
         return {
@@ -454,65 +414,11 @@ async function init() {
       await saveCatalog();
     }
   } catch(e) {
-    catalog = defaultCatalog();
+    catalog = def;
   }
-
   renderAll();
   document.getElementById('loading').style.display = 'none';
-  document.getElementById('app').style.display     = 'block';
-}
-
-// ── STOCK ────────────────────────────────────────────────────────
-function calcStock(compras, ventas) {
-  const totComp = {};
-  const totVent = {};
-
-  compras.forEach(c => {
-    totComp[c.producto] = (totComp[c.producto]||0) + (c.cantidad||0);
-  });
-
-  ventas.forEach(v => {
-    // Pizzas (kits)
-    if (v.tipo === 'pizza') {
-      totVent[v.producto] = (totVent[v.producto]||0) + (v.cantidad||1);
-    }
-    // Empanadas por variedad
-    if (v.tipo === 'empanada') {
-      if (v.variedad) {
-        const key = 'emp-' + v.variedad;
-        totVent[key] = (totVent[key]||0) + (v.docenas||1);
-      }
-      // items_json para pedidos mixtos
-      if (v.items_json) {
-        try {
-          const items = JSON.parse(v.items_json);
-          items.forEach(it => {
-            if (it.id) totVent[it.id] = (totVent[it.id]||0) + (it.qty||it.docenas||1);
-          });
-        } catch(e){}
-      }
-    }
-  });
-
-  // Construir mapa catalogId → stock disponible
-  const result = {};
-  Object.entries(CATALOGO_ID_MAP).forEach(([catId, prodId]) => {
-    const comp = totComp[prodId] || 0;
-    const vent = totVent[prodId] || 0;
-    result[catId] = Math.max(0, comp - vent);
-  });
-  return result;
-}
-
-function getStockKit(kitId) {
-  // Si no hay datos de compras en absoluto, no mostramos restricción
-  const s = stock[kitId];
-  return (s === undefined) ? null : s;
-}
-
-function getStockEmp(empId) {
-  const s = stock[empId];
-  return (s === undefined) ? null : s;
+  document.getElementById('app').style.display = 'block';
 }
 
 // ── RENDER ──────────────────────────────────────────────────────
@@ -530,6 +436,7 @@ function renderHeroes() {
   hp.innerHTML = `<img src="${IMG_PIZZAS}" alt="Pizza" onerror="this.outerHTML='<div class=hero-ph>🍕</div>'">
     <div class="hero-accent"></div>
     <div class="hero-ov"><div class="hero-lbl">Pizza lista para hornear<br>o a la parrilla</div><div class="hero-sub">Masa artesanal · muzzarella · salsa casera</div></div>`;
+
   const he = document.getElementById('hero-empanadas');
   he.innerHTML = `<img src="${IMG_EMPANADAS}" alt="Empanadas" onerror="this.outerHTML='<div class=hero-ph>🥟</div>'">
     <div class="hero-accent"></div>
@@ -552,20 +459,9 @@ function renderKits() {
   c.innerHTML = sorted.map(kit => kitHTML(kit)).join('');
 }
 
-function stockTagKit(kitId, nro) {
-  const s = getStockKit(kitId);
-  if (s === null) return `<span class="tag">${nro} masas</span><span class="tag">${nro} muzzarellas</span><span class="tag">${nro} salsas</span>`;
-  if (s === 0)    return `<span class="tag">${nro} masas</span><span class="tag">${nro} muzzarellas</span><span class="tag">${nro} salsas</span><span class="tag stock-out">Sin stock</span>`;
-  if (s <= 2)     return `<span class="tag">${nro} masas</span><span class="tag">${nro} muzzarellas</span><span class="tag">${nro} salsas</span><span class="tag stock-low">Últimos ${s}</span>`;
-  return `<span class="tag">${nro} masas</span><span class="tag">${nro} muzzarellas</span><span class="tag">${nro} salsas</span><span class="tag stock-ok">${s} disponibles</span>`;
-}
-
 function kitHTML(kit) {
   const enc = kit.state==='encargo';
   const nro = kit.featured ? 10 : 5;
-  const s   = getStockKit(kit.id);
-  const out = s !== null && s === 0;
-
   const masasVis = (kit.masas||[]).filter(m=>m.state!=='off');
   const muzzVis  = (kit.muzzarellas||[]).filter(m=>m.state!=='off');
 
@@ -573,7 +469,7 @@ function kitHTML(kit) {
     <div class="opts-sec">
       <div class="opts-lbl">${tipo==='masa'?'Tipo de masa':'Muzzarella'}</div>
       ${arr.map((o,i)=>`
-        <div class="opt${i===0?' on':''}${out?' disabled':''}" onclick="${out?'':'selectOpt(\''+kit.id+'\',\''+tipo+'\',\''+o.id+'\',this)'}">
+        <div class="opt${i===0?' on':''}" onclick="selectOpt('${kit.id}','${tipo}','${o.id}',this)">
           <div class="opt-left">
             <div class="radio"></div>
             <span class="opt-name">${o.name}</span>
@@ -581,34 +477,33 @@ function kitHTML(kit) {
           </div>
           ${o.price>0?`<span class="opt-extra">+$${fmt(o.price)}</span>`:''}
         </div>
-        ${o.state==='encargo'&&!out?`<div class="enc-note" id="enc-${kit.id}-${tipo}-${o.id}">📋 Se coordina por separado</div>`:''}
+        ${o.state==='encargo'?`<div class="enc-note" id="enc-${kit.id}-${tipo}-${o.id}">📋 Se coordina por separado</div>`:''}
       `).join('')}
     </div>` : '';
 
-  const statusBadge = out
-    ? '<span class="b-out">Sin stock</span>'
-    : enc ? '<span class="b-enc">📋 Encargo</span>' : '<span class="b-disp">✓ Disponible</span>';
-
   return `
-    <div class="kit"${out?' style="opacity:0.6"':''}>
+    <div class="kit">
       <div class="kit-top">
         ${kit.featured?'<span class="b-sold">Más vendido</span>':'<span></span>'}
-        ${statusBadge}
+        ${enc?'<span class="b-enc">📋 Encargo</span>':'<span class="b-disp">✓ Disponible</span>'}
       </div>
       <div class="kit-name">${kit.name}</div>
-      <div class="tags">${stockTagKit(kit.id, nro)}</div>
+      <div class="tags">
+        <span class="tag">${nro} masas</span>
+        <span class="tag">${nro} muzzarellas</span>
+        <span class="tag">${nro} salsas</span>
+      </div>
       ${optsHTML(masasVis,'masa')}
       ${optsHTML(muzzVis,'muzz')}
       <div class="kit-foot">
         <div><div class="price">$${fmt(kit.price)}</div><div class="psub">$${fmt(Math.round(kit.price/nro))} por pizza</div></div>
         <div class="qty">
-          <button class="qb" onclick="changeKitQty('${kit.id}',-1)" ${out?'disabled':''}>−</button>
+          <button class="qb" onclick="changeKitQty('${kit.id}',-1)">−</button>
           <div class="qv" id="qty-${kit.id}">0</div>
-          <button class="qb" onclick="changeKitQty('${kit.id}',1)" ${out?'disabled':''}>+</button>
+          <button class="qb" onclick="changeKitQty('${kit.id}',1)">+</button>
         </div>
       </div>
-      ${enc&&!out?'<div class="enc-note show" style="margin-top:9px">📋 Este kit se coordina por separado</div>':''}
-      ${out?'<div class="enc-note show" style="margin-top:9px;color:#A32D2D;background:#FDE8E8;border-color:#F5C0C0">Sin stock por el momento</div>':''}
+      ${enc?'<div class="enc-note show" style="margin-top:9px">📋 Este kit se coordina por separado</div>':''}
     </div>`;
 }
 
@@ -638,34 +533,23 @@ function renderPizzaExtras() {
 
 function renderEmps() {
   const emps = (catalog.emps||[]).filter(e=>e.state!=='off');
-  document.getElementById('emp-container').innerHTML = emps.map(e=>{
-    const s   = getStockEmp(e.id);
-    const out = s !== null && s === 0;
-    const low = s !== null && s > 0 && s <= 3;
-    let stLabel, stClass, dotClass;
-    if (out)              { stLabel='Sin stock';     stClass='out'; dotClass='out'; }
-    else if (e.state==='encargo') { stLabel='📋 Por encargo'; stClass='enc'; dotClass='enc'; }
-    else if (low)         { stLabel=`⚠️ Últimas ${s} doc.`; stClass='enc'; dotClass='enc'; }
-    else                  { stLabel='✓ Disponible';  stClass='';   dotClass='';   }
-
-    return `
-    <div class="emp${out?' out-of-stock':''}">
-      <div class="dot ${dotClass}"></div>
+  document.getElementById('emp-container').innerHTML = emps.map(e=>`
+    <div class="emp">
+      <div class="dot${e.state==='encargo'?' enc':''}"></div>
       <div class="emp-info">
         <div class="emp-name">${e.name}</div>
-        <div class="emp-st ${stClass}">${stLabel}</div>
+        <div class="emp-st${e.state==='encargo'?' enc':''}">${e.state==='encargo'?'📋 Por encargo':'✓ Disponible'}</div>
       </div>
       <div style="text-align:right;margin-right:8px">
         <div class="emp-pr">$${fmt(e.price)}</div>
         <div class="emp-psub">por docena</div>
       </div>
       <div class="qty">
-        <button class="qb" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},-1)" ${out?'disabled':''}>−</button>
+        <button class="qb" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},-1)">−</button>
         <div class="qv" id="qty-em-${e.id}">0</div>
-        <button class="qb" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},1)" ${out?'disabled':''}>+</button>
+        <button class="qb" onclick="changeEmpQty('${e.id}','${e.name}',${e.price},1)">+</button>
       </div>
-    </div>`;
-  }).join('');
+    </div>`).join('');
 }
 
 // ── TABS ────────────────────────────────────────────────────────
@@ -683,7 +567,7 @@ function selectOpt(kitId, tipo, optId, el) {
   const noteEl = document.getElementById(`enc-${kitId}-${tipo}-${optId}`);
   if (noteEl) noteEl.classList.add('show');
 
-  const kitDef  = (catalog.kits||[]).find(k=>k.id===kitId);
+  const kitDef = (catalog.kits||[]).find(k=>k.id===kitId);
   const cartKit = cart.kits.find(k=>k.id===kitId);
   if (!cartKit || !kitDef) return;
 
@@ -691,7 +575,7 @@ function selectOpt(kitId, tipo, optId, el) {
     cartKit.masa = (kitDef.masas||[]).find(m=>m.id===optId)||null;
   } else {
     const muzz = (kitDef.muzzarellas||[]).find(m=>m.id===optId)||null;
-    cartKit.muzz  = muzz;
+    cartKit.muzz = muzz;
     cartKit.price = kitDef.price + (muzz?.price||0);
     updateCartBar();
   }
@@ -701,10 +585,7 @@ function selectOpt(kitId, tipo, optId, el) {
 function changeKitQty(kitId, delta) {
   const kitDef = (catalog.kits||[]).find(k=>k.id===kitId);
   if (!kitDef) return;
-  const s = getStockKit(kitId);
   const ex = cart.kits.find(k=>k.id===kitId);
-  const currentQty = ex?.qty || 0;
-  if (delta > 0 && s !== null && currentQty >= s) return; // límite stock
   if (ex) {
     ex.qty = Math.max(0, ex.qty+delta);
     if (ex.qty===0) cart.kits = cart.kits.filter(k=>k.id!==kitId);
@@ -728,11 +609,7 @@ function changePizzaExtraQty(id, name, price, delta) {
 }
 
 function changeEmpQty(id, name, price, delta) {
-  const empDef = (catalog.emps||[]).find(e=>e.id===id);
-  const s = getStockEmp(id);
   const ex = cart.emps.find(e=>e.id===id);
-  const currentQty = ex?.qty || 0;
-  if (delta > 0 && s !== null && currentQty >= s) return; // límite stock
   if (ex) { ex.qty=Math.max(0,ex.qty+delta); if(ex.qty===0) cart.emps=cart.emps.filter(e=>e.id!==id); }
   else if (delta>0) cart.emps.push({id,name,price,qty:1});
   const el = document.getElementById('qty-em-'+id);
@@ -742,7 +619,7 @@ function changeEmpQty(id, name, price, delta) {
 
 function bestPrice(n) {
   const p = catalog.promos||{};
-  let best = n*(PRECIO_PROMO[1]||17000);
+  let best = n*(PRECIO_PROMO[1]||15000);
   for (let t3=Math.floor(n/3);t3>=0;t3--) {
     const rem=n-t3*3,t2=Math.floor(rem/2),t1=rem-t2*2;
     const costo=(p[3]?t3*PRECIO_PROMO[3]:t3*PRECIO_PROMO[1]*3)+(p[2]?t2*PRECIO_PROMO[2]:t2*PRECIO_PROMO[1]*2)+t1*PRECIO_PROMO[1];
@@ -777,7 +654,7 @@ function updateCartBar() {
 }
 
 // ── PANEL CARRITO ───────────────────────────────────────────────
-function openCart()  { renderCartPanel(); document.getElementById('cart-panel').classList.add('open'); }
+function openCart() { renderCartPanel(); document.getElementById('cart-panel').classList.add('open'); }
 function handleCartBg(e) { if(e.target===document.getElementById('cart-panel')) closeCart(); }
 function closeCart() { document.getElementById('cart-panel').classList.remove('open'); }
 
@@ -851,9 +728,15 @@ function calcEmpDesglose(emps, promos) {
   let rem = docs;
   const lines = [];
   let subtotal = 0;
-  if (p[3]) { const n3=Math.floor(rem/3); if(n3){lines.push({qty:n3,tipo:'promo3',precio:PRECIO_PROMO[3]});subtotal+=n3*PRECIO_PROMO[3];rem-=n3*3;} }
-  if (p[2]) { const n2=Math.floor(rem/2); if(n2){lines.push({qty:n2,tipo:'promo2',precio:PRECIO_PROMO[2]});subtotal+=n2*PRECIO_PROMO[2];rem-=n2*2;} }
-  if (rem)  { lines.push({qty:rem,tipo:'sueltas',precio:PRECIO_PROMO[1]});subtotal+=rem*PRECIO_PROMO[1]; }
+  if (p[3]) {
+    const n3 = Math.floor(rem/3);
+    if (n3) { lines.push({qty:n3, tipo:'promo3', precio:PRECIO_PROMO[3]}); subtotal+=n3*PRECIO_PROMO[3]; rem-=n3*3; }
+  }
+  if (p[2]) {
+    const n2 = Math.floor(rem/2);
+    if (n2) { lines.push({qty:n2, tipo:'promo2', precio:PRECIO_PROMO[2]}); subtotal+=n2*PRECIO_PROMO[2]; rem-=n2*2; }
+  }
+  if (rem) { lines.push({qty:rem, tipo:'sueltas', precio:PRECIO_PROMO[1]}); subtotal+=rem*PRECIO_PROMO[1]; }
   return {lines, subtotal};
 }
 
@@ -881,17 +764,23 @@ function sendWA() {
       if(k.muzz) msg += `    Muzzarella: ${k.muzz.name}${k.muzz.state==='encargo'?' 📋':''}\n`;
     });
   }
+
   if(cart.pizzaExtras.length) {
     msg += '\n*➕ Extras pizza*\n';
-    cart.pizzaExtras.forEach(e=>{ msg += `  • ${e.name}${e.qty>1?' ×'+e.qty:''} — $${fmt(e.price*e.qty)}\n`; });
+    cart.pizzaExtras.forEach(e=>{
+      msg += `  • ${e.name}${e.qty>1?' ×'+e.qty:''} — $${fmt(e.price*e.qty)}\n`;
+    });
   }
+
   if(cart.emps.length) {
     const bd = calcEmpDesglose(cart.emps, catalog.promos||{});
     msg += '\n*🥟 Empanadas*\n';
-    cart.emps.forEach(e=>{ msg += `  • ${e.qty} docena${e.qty>1?'s':''} ${e.name}\n`; });
+    cart.emps.forEach(e=>{
+      msg += `  • ${e.qty} docena${e.qty>1?'s':''} ${e.name}\n`;
+    });
     bd.lines.forEach(l=>{
-      if(l.tipo==='promo3') msg += `  • ${l.qty} promo 3 doc. $${fmt(l.precio)}\n`;
-      else if(l.tipo==='promo2') msg += `  • ${l.qty} promo 2 doc. $${fmt(l.precio)}\n`;
+      if(l.tipo==='promo3') msg += `  • ${l.qty} promo 3 docenas $${fmt(l.precio)}\n`;
+      else if(l.tipo==='promo2') msg += `  • ${l.qty} promo 2 docenas $${fmt(l.precio)}\n`;
       else msg += `  • ${l.qty} docena${l.qty>1?'s':''} $${fmt(l.precio)}\n`;
     });
     msg += `Subtotal: $${fmt(bd.subtotal)}\n`;
@@ -899,10 +788,15 @@ function sendWA() {
 
   const total = getTotal();
   msg += `\n💰 *TOTAL: $${fmt(total)}*\n`;
+
   if(selectedPago==='efectivo') {
     const m=parseFloat(document.getElementById('monto-ef').value)||0;
-    if(m>0) { const v=m-total; msg += `💵 Paga con: $${fmt(m)} — Vuelto: $${fmt(Math.abs(v))}${v<0?' (falta)':''}\n`; }
+    if(m>0) {
+      const v=m-total;
+      msg += `💵 Paga con: $${fmt(m)} — Vuelto: $${fmt(Math.abs(v))}${v<0?' (falta)':''}\n`;
+    }
   }
+
   if(selectedPago==='transferencia') {
     msg += '\n📲 *Para pago con transferencia*\n';
     msg += 'Titular: Maria Laura Bossio\n';
@@ -921,9 +815,9 @@ document.getElementById('brand-tap').addEventListener('click',()=>{
   tapTimer=setTimeout(()=>tapCount=0,2000);
   if(tapCount>=5){tapCount=0;openAdmin();}
 });
-function openAdmin()  { document.getElementById('admin-modal').classList.add('open'); }
-function closeAdmin() { document.getElementById('admin-modal').classList.remove('open'); }
-function checkPwd() {
+function openAdmin(){document.getElementById('admin-modal').classList.add('open');}
+function closeAdmin(){document.getElementById('admin-modal').classList.remove('open');}
+function checkPwd(){
   const v=document.getElementById('admin-pwd').value;
   if(v===ADMIN_PWD){
     adminUnlocked=true;
@@ -935,31 +829,10 @@ function checkPwd() {
   }
 }
 
-function renderAdmin() {
+function renderAdmin(){
   let html='';
 
-  // Stock en tiempo real (resumen)
-  html+=`<div class="admin-sec-title">Stock actual (calculado)</div>`;
-  const stockItems = [
-    {label:'PizzaKit x10', id:'k10'}, {label:'PizzaKit x5', id:'k5'},
-    {label:'Jamón y Muzza', id:'e1'}, {label:'Berenjena/hongos', id:'e2'},
-    {label:'Salteñas', id:'e3'}, {label:'Criollas', id:'e4'},
-    {label:'Pollo', id:'e5'}, {label:'Árabes', id:'e6'},
-    {label:'Chorizo/verduras', id:'e7'}, {label:'Cordobesas', id:'e8'},
-  ];
-  stockItems.forEach(item=>{
-    const s = stock[item.id];
-    const badge = s===undefined
-      ? '<span class="stock-badge" style="color:var(--text3);background:var(--green-bg)">sin datos</span>'
-      : s===0
-        ? '<span class="stock-badge out">0 — sin stock</span>'
-        : s<=3
-          ? `<span class="stock-badge low">${s} restantes</span>`
-          : `<span class="stock-badge ok">${s} disponibles</span>`;
-    html+=`<div class="admin-row"><div class="admin-row-name">${item.label}</div>${badge}</div>`;
-  });
-
-  // Promos
+  // Promos empanadas
   html+=`<div class="admin-sec-title">Promos empanadas</div>`;
   [2,3].forEach(n=>{
     html+=`<div class="toggle-row"><label>Promo ×${n} docenas — $${fmt(PRECIO_PROMO[n])}</label>
@@ -974,15 +847,17 @@ function renderAdmin() {
       <input class="admin-input" type="number" id="kp-${ki}" value="${k.price}">
       ${['on','encargo','off'].map(s=>`<button class="state-btn${k.state===s?' s-'+s:''}" onclick="setKitState(${ki},'${s}',this)">${s}</button>`).join('')}
     </div>`;
+
+    // Masas del kit
     html+=`<div style="padding-left:12px;border-left:2px solid var(--border2);margin:2px 0 6px">`;
-    html+=`<div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;padding:4px 0">Masas</div>`;
+    html+=`<div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:4px 0 4px">Masas</div>`;
     (k.masas||[]).forEach((m,mi)=>{
       html+=`<div class="admin-row">
         <div class="admin-row-name" style="font-size:11px">${m.name}</div>
         ${['on','encargo','off'].map(s=>`<button class="state-btn${m.state===s?' s-'+s:''}" onclick="setMasaState(${ki},${mi},'${s}',this)">${s}</button>`).join('')}
       </div>`;
     });
-    html+=`<div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;padding:8px 0 4px">Muzzarellas</div>`;
+    html+=`<div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:8px 0 4px">Muzzarellas</div>`;
     (k.muzzarellas||[]).forEach((mz,mzi)=>{
       html+=`<div class="admin-row">
         <div class="admin-row-name" style="font-size:11px">${mz.name}</div>
@@ -1006,13 +881,8 @@ function renderAdmin() {
   // Empanadas
   html+=`<div class="admin-sec-title">Empanadas</div>`;
   (catalog.emps||[]).forEach((e,i)=>{
-    const s = stock[e.id];
-    const badge = s===undefined ? '' : s===0
-      ? '<span class="stock-badge out">sin stock</span>'
-      : s<=3 ? `<span class="stock-badge low">${s}</span>`
-      : `<span class="stock-badge ok">${s}</span>`;
     html+=`<div class="admin-row">
-      <div class="admin-row-name">${e.name}${badge}</div>
+      <div class="admin-row-name">${e.name}</div>
       <input class="admin-input" type="number" id="ep-${i}" value="${e.price}">
       ${['on','encargo','off'].map(s=>`<button class="state-btn${e.state===s?' s-'+s:''}" onclick="setEmpState(${i},'${s}',this)">${s}</button>`).join('')}
     </div>`;
@@ -1021,35 +891,49 @@ function renderAdmin() {
   document.getElementById('admin-content').innerHTML=html;
 }
 
-function setKitState(i,s,btn)        { catalog.kits[i].state=s;                    updateStateBtns(btn,s); }
-function setMasaState(ki,mi,s,btn)   { catalog.kits[ki].masas[mi].state=s;         updateStateBtns(btn,s); }
-function setMuzzState(ki,mzi,s,btn)  { catalog.kits[ki].muzzarellas[mzi].state=s;  updateStateBtns(btn,s); }
-function setPizzaExtraState(i,s,btn) { catalog.pizzaExtras[i].state=s;             updateStateBtns(btn,s); }
-function setEmpState(i,s,btn)        { catalog.emps[i].state=s;                    updateStateBtns(btn,s); }
+function setKitState(i,s,btn){ catalog.kits[i].state=s; updateStateBtns(btn); }
+function setMasaState(ki,mi,s,btn){ catalog.kits[ki].masas[mi].state=s; updateStateBtns(btn); }
+function setMuzzState(ki,mzi,s,btn){ catalog.kits[ki].muzzarellas[mzi].state=s; updateStateBtns(btn); }
+function setPizzaExtraState(i,s,btn){ catalog.pizzaExtras[i].state=s; updateStateBtns(btn); }
+function setEmpState(i,s,btn){ catalog.emps[i].state=s; updateStateBtns(btn); }
 
-function updateStateBtns(btn, s) {
+function updateStateBtns(btn){
   btn.closest('.admin-row').querySelectorAll('.state-btn').forEach(b=>b.className='state-btn');
+  const s=btn.textContent.trim();
   btn.className=`state-btn s-${s}`;
 }
 
-async function saveAdmin() {
+async function saveAdmin(){
+  // Kits precios
   (catalog.kits||[]).forEach((k,ki)=>{
-    const el=document.getElementById(`kp-${ki}`); if(el) k.price=parseFloat(el.value)||k.price;
+    const el=document.getElementById(`kp-${ki}`);
+    if(el) k.price=parseFloat(el.value)||k.price;
+    // Muzz precios
     (k.muzzarellas||[]).forEach((mz,mzi)=>{
-      const elMz=document.getElementById(`mzp-${ki}-${mzi}`); if(elMz) mz.price=parseFloat(elMz.value)||0;
+      const elMz=document.getElementById(`mzp-${ki}-${mzi}`);
+      if(elMz) mz.price=parseFloat(elMz.value)||0;
     });
   });
-  (catalog.pizzaExtras||[]).forEach((ex,i)=>{ const el=document.getElementById(`pxp-${i}`); if(el) ex.price=parseFloat(el.value)||ex.price; });
-  (catalog.emps||[]).forEach((e,i)=>{ const el=document.getElementById(`ep-${i}`); if(el) e.price=parseFloat(el.value)||e.price; });
+  // Extras pizza precios
+  (catalog.pizzaExtras||[]).forEach((ex,i)=>{
+    const el=document.getElementById(`pxp-${i}`);
+    if(el) ex.price=parseFloat(el.value)||ex.price;
+  });
+  // Empanadas precios
+  (catalog.emps||[]).forEach((e,i)=>{
+    const el=document.getElementById(`ep-${i}`);
+    if(el) e.price=parseFloat(el.value)||e.price;
+  });
+  // Promos
   if(!catalog.promos) catalog.promos={};
-  [2,3].forEach(n=>{ const el=document.getElementById(`pt-${n}`); if(el) catalog.promos[n]=el.checked; });
+  [2,3].forEach(n=>{const el=document.getElementById(`pt-${n}`);if(el)catalog.promos[n]=el.checked;});
   await saveCatalog();
   renderAll();
   closeAdmin();
 }
 
-async function saveCatalog() {
-  await sb.from('catalogo').upsert({id:1, data:JSON.stringify(catalog)});
+async function saveCatalog(){
+  await sb.from('catalogo').upsert({id:1,data:JSON.stringify(catalog)});
 }
 
 // ── HELPERS ─────────────────────────────────────────────────────
